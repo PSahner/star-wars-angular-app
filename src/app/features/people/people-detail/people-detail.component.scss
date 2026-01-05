@@ -1,0 +1,68 @@
+/**
+ * People Detail Component Styles
+ * Detailed character view with responsive layout
+ */
+
+// Ensure image aspect ratio
+.character-image {
+  @apply w-full h-auto;
+  max-height: 600px;
+  object-fit: cover;
+}
+
+// Detail item styling
+.detail-item {
+  @apply flex items-start py-3 border-b border-gray-200;
+
+  &:last-child {
+    @apply border-b-0;
+  }
+}
+
+// Film cards horizontal scroll
+.film-scroll-container {
+  @apply flex overflow-x-auto space-x-4 pb-4;
+  -webkit-overflow-scrolling: touch;
+
+  // Hide scrollbar but keep functionality
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+// Film card styling
+.film-card {
+  @apply flex-shrink-0 w-64;
+
+  &:hover {
+    transform: translateY(-2px);
+    transition: transform 0.3s ease;
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 1023px) {
+  // Stack layout on mobile/tablet
+  .detail-grid {
+    @apply grid-cols-1;
+  }
+
+  // Move image to top on mobile
+  .character-image {
+    @apply order-first;
+  }
+}
+
+// Loading spinner
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}

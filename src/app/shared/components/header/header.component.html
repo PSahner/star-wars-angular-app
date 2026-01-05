@@ -1,0 +1,143 @@
+<!-- Header Navigation -->
+<header class="bg-star-wars-black text-white shadow-lg sticky top-0 z-50">
+  <div class="container mx-auto px-4">
+    <div class="flex items-center justify-between h-20">
+
+      <!-- Logo -->
+      <div class="flex-shrink-0">
+        <a routerLink="/" class="flex items-center">
+          <div class="text-star-wars-yellow font-bold text-2xl tracking-wider">
+            STAR<br>WARS
+          </div>
+        </a>
+      </div>
+
+      <!-- Desktop Navigation -->
+      <nav class="hidden md:flex items-center space-x-8">
+        <a
+          routerLink="/filme"
+          routerLinkActive="text-star-wars-yellow border-b-2 border-star-wars-yellow"
+          class="text-white hover:text-star-wars-yellow transition-colors duration-200 py-2 text-lg"
+        >
+          Filme
+        </a>
+        <a
+          routerLink="/charaktere"
+          routerLinkActive="text-star-wars-yellow border-b-2 border-star-wars-yellow"
+          class="text-white hover:text-star-wars-yellow transition-colors duration-200 py-2 text-lg"
+        >
+          Charaktere
+        </a>
+        <a
+          routerLink="/planeten"
+          routerLinkActive="text-star-wars-yellow border-b-2 border-star-wars-yellow"
+          class="text-white hover:text-star-wars-yellow transition-colors duration-200 py-2 text-lg"
+        >
+          Planeten
+        </a>
+      </nav>
+
+      <!-- Search Bar (Desktop) -->
+      <div class="hidden md:block">
+        <form (ngSubmit)="onSearch()" class="relative">
+          <input
+            type="text"
+            [(ngModel)]="searchQuery"
+            name="search"
+            placeholder="Suche"
+            class="bg-gray-800 text-white rounded-full px-4 py-2 pr-10 focus:outline-none focus:ring-2 focus:ring-star-wars-yellow w-64"
+          />
+          <button
+            type="submit"
+            class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-star-wars-yellow"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </button>
+        </form>
+      </div>
+
+      <!-- Mobile Menu Button -->
+      <button
+        (click)="toggleMobileMenu()"
+        class="md:hidden text-white focus:outline-none"
+        aria-label="Toggle menu"
+      >
+        <svg
+          *ngIf="!isMobileMenuOpen"
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-6 w-6"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+        <svg
+          *ngIf="isMobileMenuOpen"
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-6 w-6"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div
+      *ngIf="isMobileMenuOpen"
+      class="md:hidden pb-4 animate-slide-down"
+    >
+      <!-- Mobile Navigation -->
+      <nav class="flex flex-col space-y-4 mb-4">
+        <a
+          routerLink="/filme"
+          routerLinkActive="text-star-wars-yellow"
+          (click)="closeMobileMenu()"
+          class="text-white hover:text-star-wars-yellow transition-colors duration-200 text-lg"
+        >
+          Filme
+        </a>
+        <a
+          routerLink="/charaktere"
+          routerLinkActive="text-star-wars-yellow"
+          (click)="closeMobileMenu()"
+          class="text-white hover:text-star-wars-yellow transition-colors duration-200 text-lg"
+        >
+          Charaktere
+        </a>
+        <a
+          routerLink="/planeten"
+          routerLinkActive="text-star-wars-yellow"
+          (click)="closeMobileMenu()"
+          class="text-white hover:text-star-wars-yellow transition-colors duration-200 text-lg"
+        >
+          Planeten
+        </a>
+      </nav>
+
+      <!-- Mobile Search -->
+      <form (ngSubmit)="onSearch()" class="relative">
+        <input
+          type="text"
+          [(ngModel)]="searchQuery"
+          name="search"
+          placeholder="Suche"
+          class="bg-gray-800 text-white rounded-full px-4 py-2 pr-10 focus:outline-none focus:ring-2 focus:ring-star-wars-yellow w-full"
+        />
+        <button
+          type="submit"
+          class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-star-wars-yellow"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+        </button>
+      </form>
+    </div>
+  </div>
+</header>

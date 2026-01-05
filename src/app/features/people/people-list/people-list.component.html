@@ -1,0 +1,130 @@
+<!-- People List Container -->
+<div class="min-h-screen bg-gray-50 py-8">
+  <div class="container mx-auto px-4">
+
+    <!-- Page Title -->
+    <h1 class="text-4xl md:text-5xl font-bold text-center mb-12 text-gray-900">
+      Charaktere
+    </h1>
+
+    <!-- Loading State -->
+    <div *ngIf="isLoading" class="flex justify-center items-center min-h-[400px]">
+      <div class="text-center">
+        <div class="inline-block animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-star-wars-yellow"></div>
+        <p class="mt-4 text-gray-600 text-lg">Lade Charaktere...</p>
+      </div>
+    </div>
+
+    <!-- Error State -->
+    <div *ngIf="!isLoading && errorMessage" class="max-w-2xl mx-auto">
+      <div class="bg-red-50 border-l-4 border-red-500 p-6 rounded-lg shadow-md">
+        <div class="flex items-center">
+          <svg class="h-6 w-6 text-red-500 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <div>
+            <h3 class="text-red-800 font-semibold text-lg">Fehler</h3>
+            <p class="text-red-700 mt-1">{{ errorMessage }}</p>
+          </div>
+        </div>
+        <button
+          (click)="retry()"
+          class="mt-4 bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-6 rounded-lg transition-colors duration-200"
+        >
+          Erneut versuchen
+        </button>
+      </div>
+    </div>
+
+    <!-- People Grid -->
+    <div *ngIf="!isLoading && !errorMessage && people.length > 0">
+      <!-- Grid Container -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+        <!-- Person Card -->
+        <div
+          *ngFor="let person of people"
+          class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-2xl transition-shadow duration-300 transform hover:-translate-y-1"
+        >
+          <!-- Character Image -->
+          <div class="relative h-64 bg-gray-200 overflow-hidden">
+            <img
+              [src]="person.imageUrl"
+              [alt]="person.name"
+              (error)="onImageError($event)"
+              class="w-full h-full object-cover"
+            />
+            <!-- Overlay gradient -->
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+          </div>
+
+          <!-- Card Content -->
+          <div class="p-6">
+            <h3 class="text-xl font-bold text-gray-900 mb-3">{{ person.name }}</h3>
+
+            <!-- Character Info -->
+            <div class="space-y-2 text-sm text-gray-600 mb-4">
+              <div class="flex items-center">
+                <span class="font-semibold w-32">Geburtsjahr:</span>
+                <span>{{ person.birth_year }}</span>
+              </div>
+              <div class="flex items-center">
+                <span class="font-semibold w-32">Geschlecht:</span>
+                <span class="capitalize">{{ person.gender === 'male' ? 'Männlich' : person.gender === 'female' ? 'Weiblich' : person.gender }}</span>
+              </div>
+              <div class="flex items-center">
+                <span class="font-semibold w-32">Größe:</span>
+                <span>{{ person.height }} cm</span>
+              </div>
+            </div>
+
+            <!-- More Info Link -->
+            <a
+              [routerLink]="['/charaktere', extractId(person.url)]"
+              class="inline-block w-full text-center bg-star-wars-yellow hover:bg-yellow-500 text-gray-900 font-semibold py-2 px-4 rounded-lg transition-colors duration-200"
+            >
+              Mehr Informationen
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pagination -->
+      <div class="mt-12 flex justify-center items-center space-x-4">
+        <button
+          (click)="loadPreviousPage()"
+          [disabled]="!hasPreviousPage"
+          [class.opacity-50]="!hasPreviousPage"
+          [class.cursor-not-allowed]="!hasPreviousPage"
+          class="bg-gray-800 hover:bg-gray-700 text-white font-semibold py-2 px-6 rounded-lg transition-colors duration-200 disabled:hover:bg-gray-800"
+        >
+          ← Zurück
+        </button>
+
+        <span class="text-gray-700 font-medium">
+          Seite {{ currentPage }}
+        </span>
+
+        <button
+          (click)="loadNextPage()"
+          [disabled]="!hasNextPage"
+          [class.opacity-50]="!hasNextPage"
+          [class.cursor-not-allowed]="!hasNextPage"
+          class="bg-gray-800 hover:bg-gray-700 text-white font-semibold py-2 px-6 rounded-lg transition-colors duration-200 disabled:hover:bg-gray-800"
+        >
+          Weiter →
+        </button>
+      </div>
+
+      <!-- Total Count Info -->
+      <p class="text-center mt-6 text-gray-600">
+        Gesamt: {{ totalCount }} Charaktere
+      </p>
+    </div>
+
+    <!-- Empty State -->
+    <div *ngIf="!isLoading && !errorMessage && people.length === 0" class="text-center py-12">
+      <p class="text-gray-600 text-lg">Keine Charaktere gefunden.</p>
+    </div>
+
+  </div>
+</div>
