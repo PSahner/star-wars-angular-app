@@ -1,0 +1,111 @@
+name: Reusable CI
+
+on:
+  workflow_call:
+    inputs:
+      node_version:
+        description: Node.js version to use
+        required: true
+        type: string
+      run_build:
+        description: Whether to run the build step
+        required: false
+        type: boolean
+        default: true
+      build_command:
+        description: Command to build the application
+        required: false
+        type: string
+        default: npm run build
+      run_codecov:
+        description: Whether to upload coverage to Codecov
+        required: false
+        type: boolean
+        default: false
+      codecov_files:
+        description: Coverage file(s) passed to Codecov action
+        required: false
+        type: string
+        default: ./coverage/star-wars-angular-app/lcov.info
+      codecov_flags:
+        description: Codecov flags
+        required: false
+        type: string
+        default: unittests
+      codecov_name:
+        description: Codecov upload name
+        required: false
+        type: string
+        default: codecov-umbrella
+      upload_artifact:
+        description: Whether to upload a build artifact
+        required: false
+        type: boolean
+        default: false
+      artifact_name:
+        description: Artifact name
+        required: false
+        type: string
+        default: dist
+      artifact_path:
+        description: Artifact path
+        required: false
+        type: string
+        default: dist
+
+jobs:
+  ci:
+    name: CI (Node ${{ inputs.node_version }})
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ inputs.node_version }}
+          cache: 'npm'
+
+      - name: Print Node and npm versions
+        run: |
+          node -v
+          npm -v
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run linting
+        run: npm run lint
+
+      - name: Run unit tests (CI)
+        run: npm run test:ci
+
+      - name: Build
+        if: inputs.run_build
+        run: ${{ inputs.build_command }}
+
+      - name: Upload coverage reports
+        if: inputs.run_codecov
+        uses: codecov/codecov-action@v4
+        with:
+          files: ${{ inputs.codecov_files }}
+          flags: ${{ inputs.codecov_flags }}
+          name: ${{ inputs.codecov_name }}
+        continue-on-error: true
+
+      - name: Upload build artifacts
+        if: inputs.upload_artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ inputs.artifact_name }}
+          path: ${{ inputs.artifact_path }}
+          retention-days: 1
+
+      - name: CI summary
+        run: |
+          echo "### ✅ CI Completed" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- Lint: passed" >> $GITHUB_STEP_SUMMARY
+          echo "- Unit Tests: passed" >> $GITHUB_STEP_SUMMARY
+          echo "- Build: ${{ inputs.run_build && 'passed' || 'skipped' }}" >> $GITHUB_STEP_SUMMARY
