@@ -1,5 +1,4 @@
-import { Injectable, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Observable, forkJoin, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { SwapiService } from './swapi.service';
@@ -25,10 +24,6 @@ import { Person, PersonWithId, Film, Planet } from '@core/models';
   providedIn: 'root'
 })
 export class PeopleService extends SwapiService {
-  constructor() {
-    super(inject(HttpClient));
-  }
-
   /**
    * Fetches a list of people
    *

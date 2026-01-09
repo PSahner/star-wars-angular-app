@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map, retry, shareReplay, tap } from 'rxjs/operators';
@@ -36,7 +36,7 @@ export class SwapiService {
   /** Flag to enable/disable caching */
   protected enableCache = true;
 
-  constructor(protected http: HttpClient) {}
+  protected readonly http = inject(HttpClient);
 
   /**
    * Makes a GET request to the specified endpoint
