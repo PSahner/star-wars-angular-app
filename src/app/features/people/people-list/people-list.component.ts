@@ -1,10 +1,14 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { PeopleService, PicsumImageService } from '@core/services';
 import { Person } from '@core/models';
+
+import { PageContainerComponent } from '@shared/components/page-container/page-container.component';
+import { LoadingStateComponent } from '@shared/components/loading-state/loading-state.component';
+import { ErrorStateComponent } from '@shared/components/error-state/error-state.component';
 
 /**
  * Component for displaying a list of Star Wars characters/people
@@ -24,11 +28,13 @@ import { Person } from '@core/models';
 @Component({
   selector: 'app-people-list',
   standalone: true,
-  imports: [CommonModule, RouterModule],
-  templateUrl: './people-list.component.html',
-  styleUrls: ['./people-list.component.scss']
+  imports: [CommonModule, RouterModule, PageContainerComponent, LoadingStateComponent, ErrorStateComponent],
+  templateUrl: './people-list.component.html'
 })
 export class PeopleListComponent implements OnInit, OnDestroy {
+  private peopleService = inject(PeopleService);
+  private picsumImageService = inject(PicsumImageService);
+
   /** Array of people to display */
   people: Array<Person & { imageUrl: string }> = [];
 
@@ -60,11 +66,6 @@ export class PeopleListComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
   private readonly imageCache = new Map<string, string>();
-
-  constructor(
-    private peopleService: PeopleService,
-    private picsumImageService: PicsumImageService
-  ) {}
 
   ngOnInit(): void {
     this.loadPeople();

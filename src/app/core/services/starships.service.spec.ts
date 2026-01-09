@@ -1,7 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { StarshipsService } from './starships.service';
-import { Starship } from '@core/models';
+import { Starship, StarshipWithId, Person, Film } from '@core/models';
+import { of } from 'rxjs';
 
 describe('StarshipsService', () => {
   let service: StarshipsService;
@@ -118,6 +119,56 @@ describe('StarshipsService', () => {
       expect(sorted.length).toBe(2);
       expect(sorted[0].cost_in_credits).toBe('100000');
       expect(sorted[1].cost_in_credits).toBe('200000');
+    });
+  });
+
+  describe('getStarshipWithRelatedData()', () => {
+    it('should resolve limited pilots and films (max 5 each)', (done) => {
+      const starshipWithId: StarshipWithId = {
+        ...(mockStarship as Starship),
+        id: 12,
+        pilots: Array.from({ length: 6 }, (_, i) => `https://swapi.info/api/people/${i + 1}/`),
+        films: Array.from({ length: 6 }, (_, i) => `https://swapi.info/api/films/${i + 1}/`)
+      };
+
+      spyOn(service, 'getStarshipById').and.returnValue(of(starshipWithId));
+      const getByUrlSpy = spyOn(service as unknown as { getByUrl: (url: string) => unknown }, 'getByUrl')
+        .and.callFake((url: string) => {
+          if (url.includes('/people/')) {
+            return of({ url } as Person);
+          }
+          return of({ url } as Film);
+        });
+
+      service.getStarshipWithRelatedData(12).subscribe((result) => {
+        expect(result.starship.id).toBe(12);
+        expect(result.pilots.length).toBe(5);
+        expect(result.films.length).toBe(5);
+
+        const args = getByUrlSpy.calls.allArgs().map((a) => a[0]);
+        expect(args.filter((u) => u.includes('/people/')).length).toBe(5);
+        expect(args.filter((u) => u.includes('/films/')).length).toBe(5);
+        done();
+      });
+    });
+
+    it('should return empty arrays when there are no pilots/films', (done) => {
+      const starshipWithId: StarshipWithId = {
+        ...(mockStarship as Starship),
+        id: 12,
+        pilots: [],
+        films: []
+      };
+
+      spyOn(service, 'getStarshipById').and.returnValue(of(starshipWithId));
+      const getByUrlSpy = spyOn(service as unknown as { getByUrl: (url: string) => unknown }, 'getByUrl');
+
+      service.getStarshipWithRelatedData(12).subscribe((result) => {
+        expect(result.pilots).toEqual([]);
+        expect(result.films).toEqual([]);
+        expect(getByUrlSpy).not.toHaveBeenCalled();
+        done();
+      });
     });
   });
 });

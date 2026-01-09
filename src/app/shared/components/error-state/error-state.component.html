@@ -1,0 +1,21 @@
+<div class="max-w-2xl mx-auto">
+  <div class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 p-6 rounded-lg shadow-md">
+    <div class="flex items-center">
+      <svg class="h-6 w-6 text-red-500 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+      <div>
+        <h3 class="text-red-800 dark:text-red-200 font-semibold text-lg">{{ title }}</h3>
+        <p class="text-red-700 dark:text-red-300 mt-1">{{ message }}</p>
+      </div>
+    </div>
+
+    <button
+      *ngIf="showRetry"
+      (click)="retry.emit()"
+      class="mt-4 bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-6 rounded-lg transition-colors duration-200"
+    >
+      {{ retryLabel }}
+    </button>
+  </div>
+</div>

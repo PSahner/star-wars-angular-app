@@ -1,7 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { PeopleService } from './people.service';
-import { Person } from '@core/models';
+import { Person, PersonWithId, Film, Planet } from '@core/models';
+import { of } from 'rxjs';
 
 describe('PeopleService', () => {
   let service: PeopleService;
@@ -150,6 +151,57 @@ describe('PeopleService', () => {
 
       const req = httpMock.expectOne(`${baseUrl}/people/`);
       req.flush(mockResponse);
+    });
+  });
+
+  describe('getPersonWithRelatedData()', () => {
+    it('should resolve homeworld and limit films to first 5', (done) => {
+      const personWithId: PersonWithId = {
+        ...(mockPerson as Person),
+        id: 1,
+        homeworld: 'https://swapi.info/api/planets/1/',
+        films: Array.from({ length: 6 }, (_, i) => `https://swapi.info/api/films/${i + 1}/`)
+      };
+
+      spyOn(service, 'getPersonById').and.returnValue(of(personWithId));
+
+      const getByUrlSpy = spyOn(service as unknown as { getByUrl: (url: string) => unknown }, 'getByUrl')
+        .and.callFake((url: string) => {
+          if (url.includes('/planets/')) {
+            return of({ url } as Planet);
+          }
+          return of({ url } as Film);
+        });
+
+      service.getPersonWithRelatedData(1).subscribe((result) => {
+        expect(result.person.id).toBe(1);
+        expect(result.homeworld).toBeTruthy();
+        expect(result.films.length).toBe(5);
+
+        const args = getByUrlSpy.calls.allArgs().map((a) => a[0]);
+        expect(args.filter((u) => u.includes('/planets/')).length).toBe(1);
+        expect(args.filter((u) => u.includes('/films/')).length).toBe(5);
+        done();
+      });
+    });
+
+    it('should return null homeworld and empty films when missing', (done) => {
+      const personWithId: PersonWithId = {
+        ...(mockPerson as Person),
+        id: 1,
+        homeworld: '',
+        films: []
+      };
+
+      spyOn(service, 'getPersonById').and.returnValue(of(personWithId));
+      const getByUrlSpy = spyOn(service as unknown as { getByUrl: (url: string) => unknown }, 'getByUrl');
+
+      service.getPersonWithRelatedData(1).subscribe((result) => {
+        expect(result.homeworld).toBeNull();
+        expect(result.films).toEqual([]);
+        expect(getByUrlSpy).not.toHaveBeenCalled();
+        done();
+      });
     });
   });
 });

@@ -9,3 +9,4 @@ export * from './films.service';
 export * from './starships.service';
 export * from './planets.service';
 export * from './picsum-image.service';
+export * from './theme.service';

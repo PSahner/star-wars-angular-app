@@ -1,7 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { PlanetsService } from './planets.service';
-import { Planet } from '@core/models';
+import { Planet, PlanetWithId, Person, Film } from '@core/models';
+import { of } from 'rxjs';
 
 describe('PlanetsService', () => {
   let service: PlanetsService;
@@ -158,6 +159,56 @@ describe('PlanetsService', () => {
 
       const filtered = service.filterByTerrain(planets, 'mountains');
       expect(filtered.length).toBe(1);
+    });
+  });
+
+  describe('getPlanetWithRelatedData()', () => {
+    it('should resolve limited residents and films (max 5 each)', (done) => {
+      const planetWithId: PlanetWithId = {
+        ...(mockPlanet as Planet),
+        id: 1,
+        residents: Array.from({ length: 6 }, (_, i) => `https://swapi.info/api/people/${i + 1}/`),
+        films: Array.from({ length: 6 }, (_, i) => `https://swapi.info/api/films/${i + 1}/`)
+      };
+
+      spyOn(service, 'getPlanetById').and.returnValue(of(planetWithId));
+      const getByUrlSpy = spyOn(service as unknown as { getByUrl: (url: string) => unknown }, 'getByUrl')
+        .and.callFake((url: string) => {
+          if (url.includes('/people/')) {
+            return of({ url } as Person);
+          }
+          return of({ url } as Film);
+        });
+
+      service.getPlanetWithRelatedData(1).subscribe((result) => {
+        expect(result.planet.id).toBe(1);
+        expect(result.residents.length).toBe(5);
+        expect(result.films.length).toBe(5);
+
+        const args = getByUrlSpy.calls.allArgs().map((a) => a[0]);
+        expect(args.filter((u) => u.includes('/people/')).length).toBe(5);
+        expect(args.filter((u) => u.includes('/films/')).length).toBe(5);
+        done();
+      });
+    });
+
+    it('should return empty arrays when there are no residents/films', (done) => {
+      const planetWithId: PlanetWithId = {
+        ...(mockPlanet as Planet),
+        id: 1,
+        residents: [],
+        films: []
+      };
+
+      spyOn(service, 'getPlanetById').and.returnValue(of(planetWithId));
+      const getByUrlSpy = spyOn(service as unknown as { getByUrl: (url: string) => unknown }, 'getByUrl');
+
+      service.getPlanetWithRelatedData(1).subscribe((result) => {
+        expect(result.residents).toEqual([]);
+        expect(result.films).toEqual([]);
+        expect(getByUrlSpy).not.toHaveBeenCalled();
+        done();
+      });
     });
   });
 });

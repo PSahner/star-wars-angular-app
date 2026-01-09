@@ -1,137 +1,189 @@
 <!-- Header Navigation -->
-<header class="bg-star-wars-black text-white shadow-lg sticky top-0 z-50">
-  <div class="container mx-auto px-4">
-    <div class="flex items-center justify-between h-20">
+<header
+  class="bg-white dark:bg-black text-light-text dark:text-white fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out border-b border-[#10172C26] dark:border-gray-800 h-[var(--app-header-height)]"
+>
+  <div class="container mx-auto px-4 h-full">
+    <div class="flex items-center justify-between h-full">
 
-      <!-- Logo -->
-      <div class="flex-shrink-0">
-        <a routerLink="/" class="flex items-center">
-          <div class="text-star-wars-yellow font-bold text-2xl tracking-wider">
-            STAR<br>WARS
-          </div>
-        </a>
+      <!-- Left Side: Logo and Navigation -->
+      <div
+        class="flex items-center h-full"
+        [ngClass]="isCompact ? 'md:space-x-4' : 'md:space-x-8'"
+      >
+        <!-- Logo -->
+        <div class="flex-shrink-0 flex items-center h-full">
+          <a
+            routerLink="/"
+            class="flex items-center transition-all duration-300 ease-in-out mr-0 text-black dark:text-white"
+            [ngClass]="isCompact ? 'md:mr-[56px]' : 'md:mr-[76px]'"
+          >
+            <app-star-wars-logo
+              [className]="isCompact ? 'h-[19px] md:h-[37px] w-auto transition-all duration-300' : 'h-[19px] md:h-[46px] w-auto transition-all duration-300'"
+            ></app-star-wars-logo>
+          </a>
+        </div>
+
+        <!-- Desktop Navigation -->
+        <nav
+          class="hidden md:flex items-center"
+          [ngClass]="isCompact ? 'space-x-4' : 'space-x-8'"
+        >
+          <a
+            routerLink="/filme"
+            routerLinkActive="text-light-text dark:text-star-wars-yellow font-bold"
+            #rlaFilme="routerLinkActive"
+            class="text-light-text dark:text-white hover:text-gray-600 dark:hover:text-star-wars-yellow transition-colors duration-200 py-2 text-[14px] leading-[17px] font-normal"
+          >
+            <span [ngClass]="rlaFilme.isActive ? 'border-b border-light-text dark:border-star-wars-yellow' : ''">Filme</span>
+          </a>
+          <a
+            routerLink="/charaktere"
+            routerLinkActive="text-light-text dark:text-star-wars-yellow font-bold"
+            #rlaCharaktere="routerLinkActive"
+            class="text-light-text dark:text-white hover:text-gray-600 dark:hover:text-star-wars-yellow transition-colors duration-200 py-2 text-[14px] leading-[17px] font-normal"
+          >
+            <span [ngClass]="rlaCharaktere.isActive ? 'border-b border-light-text dark:border-star-wars-yellow' : ''">Charaktere</span>
+          </a>
+          <a
+            routerLink="/planeten"
+            routerLinkActive="text-light-text dark:text-star-wars-yellow font-bold"
+            #rlaPlaneten="routerLinkActive"
+            class="text-light-text dark:text-white hover:text-gray-600 dark:hover:text-star-wars-yellow transition-colors duration-200 py-2 text-[14px] leading-[17px] font-normal"
+          >
+            <span [ngClass]="rlaPlaneten.isActive ? 'border-b border-light-text dark:border-star-wars-yellow' : ''">Planeten</span>
+          </a>
+        </nav>
       </div>
 
-      <!-- Desktop Navigation -->
-      <nav class="hidden md:flex items-center space-x-8">
-        <a
-          routerLink="/filme"
-          routerLinkActive="text-star-wars-yellow border-b-2 border-star-wars-yellow"
-          class="text-white hover:text-star-wars-yellow transition-colors duration-200 py-2 text-lg"
-        >
-          Filme
-        </a>
-        <a
-          routerLink="/charaktere"
-          routerLinkActive="text-star-wars-yellow border-b-2 border-star-wars-yellow"
-          class="text-white hover:text-star-wars-yellow transition-colors duration-200 py-2 text-lg"
-        >
-          Charaktere
-        </a>
-        <a
-          routerLink="/planeten"
-          routerLinkActive="text-star-wars-yellow border-b-2 border-star-wars-yellow"
-          class="text-white hover:text-star-wars-yellow transition-colors duration-200 py-2 text-lg"
-        >
-          Planeten
-        </a>
-      </nav>
-
-      <!-- Search Bar (Desktop) -->
-      <div class="hidden md:block">
+      <!-- Right Side: Search and Theme Toggle (Desktop) -->
+      <div class="hidden md:flex items-center space-x-4 h-full">
         <form (ngSubmit)="onSearch()" class="relative">
           <input
             type="text"
             [(ngModel)]="searchQuery"
             name="search"
             placeholder="Suche"
-            class="bg-gray-800 text-white rounded-full px-4 py-2 pr-10 focus:outline-none focus:ring-2 focus:ring-star-wars-yellow w-64"
+            class="bg-white dark:bg-gray-800 text-light-text dark:text-white rounded-[2px] dark:rounded-full px-4 py-2 pr-10 border border-light-gray dark:border-none focus:outline-none focus:ring-1 focus:ring-light-text focus:border-light-text dark:focus:ring-2 dark:focus:ring-star-wars-yellow min-w-[220px] dark:w-64 min-h-[50px] placeholder:text-light-gray dark:placeholder:text-gray-400 placeholder:text-[16px] placeholder:leading-[22px] placeholder:font-normal placeholder:font-roboto transition-all duration-300 hover:border-light-text dark:hover:border-none"
           />
           <button
             type="submit"
-            class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-star-wars-yellow"
+            class="absolute right-3 top-1/2 transform -translate-y-1/2 text-light-gray dark:text-gray-400 hover:text-light-text dark:hover:text-star-wars-yellow transition-colors duration-200"
           >
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
           </button>
         </form>
+
+        <!-- Theme Toggle Button -->
+        <button
+          (click)="toggleTheme()"
+          class="p-2 rounded-full text-light-text dark:text-star-wars-yellow hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-400 dark:focus:ring-star-wars-yellow"
+          [attr.aria-label]="isDark() ? 'Switch to light mode' : 'Switch to dark mode'"
+        >
+          <!-- Sun Icon -->
+          <svg *ngIf="isDark()" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+          </svg>
+          <!-- Moon Icon -->
+          <svg *ngIf="!isDark()" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+          </svg>
+        </button>
       </div>
 
       <!-- Mobile Menu Button -->
-      <button
-        (click)="toggleMobileMenu()"
-        class="md:hidden text-white focus:outline-none"
-        aria-label="Toggle menu"
-      >
-        <svg
-          *ngIf="!isMobileMenuOpen"
-          xmlns="http://www.w3.org/2000/svg"
-          class="h-6 w-6"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
+      <div class="md:hidden flex items-center space-x-4">
+        <!-- Theme Toggle (Mobile) -->
+        <button
+          (click)="toggleTheme()"
+          class="text-light-text dark:text-white focus:outline-none"
         >
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-        </svg>
-        <svg
-          *ngIf="isMobileMenuOpen"
-          xmlns="http://www.w3.org/2000/svg"
-          class="h-6 w-6"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
+             <svg *ngIf="isDark()" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+          </svg>
+          <svg *ngIf="!isDark()" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+          </svg>
+        </button>
+
+        <button
+          (click)="toggleMobileMenu()"
+          class="text-light-text dark:text-white focus:outline-none"
+          aria-label="Toggle menu"
         >
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-        </svg>
-      </button>
+          <svg
+            *ngIf="!isMobileMenuOpen"
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+          <svg
+            *ngIf="isMobileMenuOpen"
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
     </div>
 
     <!-- Mobile Menu -->
     <div
       *ngIf="isMobileMenuOpen"
-      class="md:hidden pb-4 animate-slide-down"
+      class="md:hidden pb-4 animate-slide-down bg-white dark:bg-black shadow-lg absolute top-[var(--app-header-height)] left-0 w-full px-4 border-t border-gray-100 dark:border-gray-800"
     >
       <!-- Mobile Navigation -->
-      <nav class="flex flex-col space-y-4 mb-4">
+      <nav class="flex flex-col space-y-4 mb-4 pt-4">
         <a
           routerLink="/filme"
-          routerLinkActive="text-star-wars-yellow"
+          routerLinkActive="text-light-text dark:text-star-wars-yellow font-bold"
+          #rlaMobileFilme="routerLinkActive"
           (click)="closeMobileMenu()"
-          class="text-white hover:text-star-wars-yellow transition-colors duration-200 text-lg"
+          class="text-light-text dark:text-white hover:text-gray-600 dark:hover:text-star-wars-yellow transition-colors duration-200 text-[14px] leading-[17px] font-normal border-b border-light-gray/20 dark:border-gray-700 pb-2"
         >
-          Filme
+          <span>Filme</span>
         </a>
         <a
           routerLink="/charaktere"
-          routerLinkActive="text-star-wars-yellow"
+          routerLinkActive="text-light-text dark:text-star-wars-yellow font-bold"
+          #rlaMobileCharaktere="routerLinkActive"
           (click)="closeMobileMenu()"
-          class="text-white hover:text-star-wars-yellow transition-colors duration-200 text-lg"
+          class="text-light-text dark:text-white hover:text-gray-600 dark:hover:text-star-wars-yellow transition-colors duration-200 text-[14px] leading-[17px] font-normal border-b border-light-gray/20 dark:border-gray-700 pb-2"
         >
-          Charaktere
+          <span>Charaktere</span>
         </a>
         <a
           routerLink="/planeten"
-          routerLinkActive="text-star-wars-yellow"
+          routerLinkActive="text-light-text dark:text-star-wars-yellow font-bold"
+          #rlaMobilePlaneten="routerLinkActive"
           (click)="closeMobileMenu()"
-          class="text-white hover:text-star-wars-yellow transition-colors duration-200 text-lg"
+          class="text-light-text dark:text-white hover:text-gray-600 dark:hover:text-star-wars-yellow transition-colors duration-200 text-[14px] leading-[17px] font-normal border-b border-light-gray/20 dark:border-gray-700 pb-2"
         >
-          Planeten
+          <span>Planeten</span>
         </a>
       </nav>
 
       <!-- Mobile Search -->
-      <form (ngSubmit)="onSearch()" class="relative">
+      <form (ngSubmit)="onSearch()" class="relative pb-2">
         <input
           type="text"
           [(ngModel)]="searchQuery"
           name="search"
           placeholder="Suche"
-          class="bg-gray-800 text-white rounded-full px-4 py-2 pr-10 focus:outline-none focus:ring-2 focus:ring-star-wars-yellow w-full"
+          class="bg-white dark:bg-gray-800 text-light-text dark:text-white rounded-[2px] dark:rounded-full px-4 py-2 pr-10 border border-light-gray dark:border-none focus:outline-none focus:ring-1 focus:ring-light-text focus:border-light-text dark:focus:ring-2 dark:focus:ring-star-wars-yellow w-full min-h-[50px] placeholder:text-light-gray dark:placeholder:text-gray-400 placeholder:text-[16px] placeholder:leading-[22px] placeholder:font-normal placeholder:font-roboto transition-all duration-300 hover:border-light-text dark:hover:border-none"
         />
         <button
           type="submit"
-          class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-star-wars-yellow"
+          class="absolute right-3 top-1/2 transform -translate-y-1/2 -mt-1 text-light-gray dark:text-gray-400 hover:text-light-text dark:hover:text-star-wars-yellow transition-colors duration-200"
         >
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -141,3 +193,4 @@
     </div>
   </div>
 </header>
+

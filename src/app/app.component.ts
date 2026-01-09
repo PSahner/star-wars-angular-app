@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './shared/components/header/header.component';
+import { FooterComponent } from './shared/components/footer/footer.component';
 
 /**
  * Root component of the Star Wars Angular application
@@ -16,14 +17,11 @@ import { HeaderComponent } from './shared/components/header/header.component';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, HeaderComponent],
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  imports: [RouterOutlet, HeaderComponent, FooterComponent],
+  templateUrl: './app.component.html'
 })
 export class AppComponent {
   /** Application title */
   title = 'Star Wars Angular App';
 
-  /** Current year for footer */
-  currentYear = new Date().getFullYear();
 }

@@ -1,7 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { FilmsService } from './films.service';
-import { Film } from '@core/models';
+import { Film, FilmWithId } from '@core/models';
+import { of } from 'rxjs';
 
 describe('FilmsService', () => {
   let service: FilmsService;
@@ -101,6 +102,57 @@ describe('FilmsService', () => {
       expect(sorted[0].release_date).toBe('1977-05-25');
       expect(sorted[1].release_date).toBe('1980-05-17');
       expect(sorted[2].release_date).toBe('1983-05-25');
+    });
+  });
+
+  describe('getFilmWithRelatedData()', () => {
+    it('should resolve limited related data (max 5 per type)', (done) => {
+      const filmWithId: FilmWithId = {
+        ...(mockFilm as Film),
+        id: 1,
+        characters: Array.from({ length: 6 }, (_, i) => `https://swapi.info/api/people/${i + 1}/`),
+        planets: Array.from({ length: 6 }, (_, i) => `https://swapi.info/api/planets/${i + 1}/`),
+        starships: Array.from({ length: 6 }, (_, i) => `https://swapi.info/api/starships/${i + 1}/`)
+      };
+
+      spyOn(service, 'getFilmById').and.returnValue(of(filmWithId));
+
+      const getByUrlSpy = spyOn(service as unknown as { getByUrl: (url: string) => unknown }, 'getByUrl')
+        .and.callFake((url: string) => of({ url }));
+
+      service.getFilmWithRelatedData(1).subscribe((result) => {
+        expect(result.film.id).toBe(1);
+        expect(result.characters.length).toBe(5);
+        expect(result.planets.length).toBe(5);
+        expect(result.starships.length).toBe(5);
+
+        const args = getByUrlSpy.calls.allArgs().map((a) => a[0]);
+        expect(args.filter((u) => u.includes('/people/')).length).toBe(5);
+        expect(args.filter((u) => u.includes('/planets/')).length).toBe(5);
+        expect(args.filter((u) => u.includes('/starships/')).length).toBe(5);
+        done();
+      });
+    });
+
+    it('should return empty arrays when there are no related urls', (done) => {
+      const filmWithId: FilmWithId = {
+        ...(mockFilm as Film),
+        id: 1,
+        characters: [],
+        planets: [],
+        starships: []
+      };
+
+      spyOn(service, 'getFilmById').and.returnValue(of(filmWithId));
+      const getByUrlSpy = spyOn(service as unknown as { getByUrl: (url: string) => unknown }, 'getByUrl');
+
+      service.getFilmWithRelatedData(1).subscribe((result) => {
+        expect(result.characters).toEqual([]);
+        expect(result.planets).toEqual([]);
+        expect(result.starships).toEqual([]);
+        expect(getByUrlSpy).not.toHaveBeenCalled();
+        done();
+      });
     });
   });
 });

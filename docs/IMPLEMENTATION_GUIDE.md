@@ -801,7 +801,7 @@ Ensure all features maintain consistency:
 
 ### Colors & Styling
 - Star Wars yellow: `#FFE81F` (text-star-wars-yellow)
-- Black background: `#000000` (bg-star-wars-black)
+- Black background: `#000000` (bg-black)
 - Use Tailwind utility classes consistently
 
 ---

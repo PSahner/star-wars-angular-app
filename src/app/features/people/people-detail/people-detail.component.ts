@@ -1,10 +1,13 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, ActivatedRoute } from '@angular/router';
 import { Subject, forkJoin, of } from 'rxjs';
 import { takeUntil, switchMap } from 'rxjs/operators';
-import { PeopleService, PicsumImageService } from '@core/services';
+import { PeopleService, PicsumImageService, ThemeService } from '@core/services';
 import { PersonWithId, Planet, Film } from '@core/models';
+import { PageContainerComponent } from '@shared/components/page-container/page-container.component';
+import { LoadingStateComponent } from '@shared/components/loading-state/loading-state.component';
+import { ErrorStateComponent } from '@shared/components/error-state/error-state.component';
 
 /**
  * Component for displaying detailed information about a Star Wars character
@@ -25,11 +28,15 @@ import { PersonWithId, Planet, Film } from '@core/models';
 @Component({
   selector: 'app-people-detail',
   standalone: true,
-  imports: [CommonModule, RouterModule],
-  templateUrl: './people-detail.component.html',
-  styleUrls: ['./people-detail.component.scss']
+  imports: [CommonModule, RouterModule, PageContainerComponent, LoadingStateComponent, ErrorStateComponent],
+  templateUrl: './people-detail.component.html'
 })
 export class PeopleDetailComponent implements OnInit, OnDestroy {
+  private route = inject(ActivatedRoute);
+  private peopleService = inject(PeopleService);
+  private picsumImageService = inject(PicsumImageService);
+  public themeService = inject(ThemeService);
+
   /** Current person/character */
   person: (PersonWithId & { imageUrl: string }) | null = null;
 
@@ -47,12 +54,6 @@ export class PeopleDetailComponent implements OnInit, OnDestroy {
 
   /** Subject for managing subscriptions */
   private destroy$ = new Subject<void>();
-
-  constructor(
-    private route: ActivatedRoute,
-    private peopleService: PeopleService,
-    private picsumImageService: PicsumImageService
-  ) {}
 
   ngOnInit(): void {
     // Get person ID from route and load data

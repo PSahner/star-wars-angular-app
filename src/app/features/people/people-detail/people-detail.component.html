@@ -1,160 +1,226 @@
 <!-- People Detail Container -->
-<div class="min-h-screen bg-gray-50 py-8">
-  <div class="container mx-auto px-4">
+<app-page-container>
 
-    <!-- Back Button -->
-    <div class="mb-6">
-      <a
-        routerLink="/charaktere"
-        class="inline-flex items-center text-gray-700 hover:text-star-wars-yellow transition-colors duration-200"
-      >
-        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
-        </svg>
-        Zurück zur Übersicht
-      </a>
-    </div>
+  <!-- Back Button -->
+  <div class="mb-6">
+    <a
+      routerLink="/charaktere"
+      class="inline-flex items-center text-light-text dark:text-gray-300 hover:text-star-wars-yellow transition-colors duration-200"
+    >
+      <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+      </svg>
+      Zurück zur Übersicht
+    </a>
+  </div>
 
-    <!-- Loading State -->
-    <div *ngIf="isLoading" class="flex justify-center items-center min-h-[400px]">
-      <div class="text-center">
-        <div class="inline-block animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-star-wars-yellow"></div>
-        <p class="mt-4 text-gray-600 text-lg">Lade Charakterdetails...</p>
-      </div>
-    </div>
+  <!-- Loading State -->
+  <app-loading-state *ngIf="isLoading" message="Lade Charakterdetails..."></app-loading-state>
 
-    <!-- Error State -->
-    <div *ngIf="!isLoading && errorMessage" class="max-w-2xl mx-auto">
-      <div class="bg-red-50 border-l-4 border-red-500 p-6 rounded-lg shadow-md">
-        <div class="flex items-center">
-          <svg class="h-6 w-6 text-red-500 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-          <div>
-            <h3 class="text-red-800 font-semibold text-lg">Fehler</h3>
-            <p class="text-red-700 mt-1">{{ errorMessage }}</p>
-          </div>
-        </div>
-        <button
-          (click)="retry()"
-          class="mt-4 bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-6 rounded-lg transition-colors duration-200"
-        >
-          Erneut versuchen
-        </button>
-      </div>
-    </div>
+  <!-- Error State -->
+  <app-error-state *ngIf="!isLoading && errorMessage" [message]="errorMessage" (retry)="retry()"></app-error-state>
 
-    <!-- Character Detail Content -->
-    <div *ngIf="!isLoading && !errorMessage && person" class="bg-white rounded-lg shadow-xl overflow-hidden">
+  <!-- Character Detail Content -->
+  <div *ngIf="!isLoading && !errorMessage && person">
 
-      <!-- Header -->
-      <div class="bg-star-wars-black text-white text-center py-6">
-        <p class="text-sm uppercase tracking-wide text-star-wars-yellow mb-2">Characterdetails</p>
-        <h1 class="text-3xl md:text-4xl font-bold">{{ person.name }}</h1>
+    <!-- LIGHT MODE LAYOUT (Default) -->
+    <ng-container *ngIf="!themeService.isDark()">
+      <!-- Heading -->
+      <div class="text-center text-light-text mt-[87.5px] mb-[109px]">
+        <!-- Text above main text -->
+        <p class="font-roboto font-light text-[25px] leading-[30px] tracking-normal mb-[20.5px]">Charakterdetails</p>
+
+        <!-- Separator -->
+        <div class="mx-auto border border-light-text w-[53px] h-0"></div>
+
+        <!-- Main Text -->
+        <h1 class="font-roboto font-bold text-[75px] leading-[90px] tracking-normal mt-[9.5px] mb-[2px]">
+          {{ person.name }}
+        </h1>
       </div>
 
       <!-- Main Content Grid -->
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 p-6 md:p-10">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
 
         <!-- Left Column: Details -->
-        <div class="space-y-6">
-          <h2 class="text-2xl font-bold text-gray-900 mb-4">Details:</h2>
+        <div>
+          <h2 class="font-roboto font-bold text-[25px] leading-[28px] text-light-text mb-6">Details:</h2>
 
           <!-- Detail Items -->
-          <div class="space-y-3">
-            <div class="flex border-b border-gray-200 pb-2">
-              <span class="font-semibold text-gray-700 w-40">Größe:</span>
-              <span class="text-gray-900">{{ person.height !== 'unknown' ? person.height + ' cm' : 'Unbekannt' }}</span>
+          <div class="space-y-0">
+            <div class="grid grid-cols-[140px_1fr] py-1">
+              <span class="font-roboto font-bold text-[18px] leading-[23px] text-light-text">Größe:</span>
+              <span class="font-roboto font-normal text-[18px] leading-[23px] text-light-text">{{ person.height !== 'unknown' ? person.height + ' cm' : 'Unbekannt' }}</span>
             </div>
 
-            <div class="flex border-b border-gray-200 pb-2">
-              <span class="font-semibold text-gray-700 w-40">Gewicht:</span>
-              <span class="text-gray-900">{{ person.mass !== 'unknown' ? person.mass + ' kg' : 'Unbekannt' }}</span>
+            <div class="grid grid-cols-[140px_1fr] py-1">
+              <span class="font-roboto font-bold text-[18px] leading-[23px] text-light-text">Gewicht:</span>
+              <span class="font-roboto font-normal text-[18px] leading-[23px] text-light-text">{{ person.mass !== 'unknown' ? person.mass + ' kg' : 'Unbekannt' }}</span>
             </div>
 
-            <div class="flex border-b border-gray-200 pb-2">
-              <span class="font-semibold text-gray-700 w-40">Haarfarbe:</span>
-              <span class="text-gray-900 capitalize">{{ person.hair_color }}</span>
+            <div class="grid grid-cols-[140px_1fr] py-1">
+              <span class="font-roboto font-bold text-[18px] leading-[23px] text-light-text">Haarfarbe:</span>
+              <span class="font-roboto font-normal text-[18px] leading-[23px] text-light-text capitalize">{{ person.hair_color }}</span>
             </div>
 
-            <div class="flex border-b border-gray-200 pb-2">
-              <span class="font-semibold text-gray-700 w-40">Augenfarbe:</span>
-              <span class="text-gray-900 capitalize">{{ person.eye_color }}</span>
+            <div class="grid grid-cols-[140px_1fr] py-1">
+              <span class="font-roboto font-bold text-[18px] leading-[23px] text-light-text">Augenfarbe:</span>
+              <span class="font-roboto font-normal text-[18px] leading-[23px] text-light-text capitalize">{{ person.eye_color }}</span>
             </div>
 
-            <div class="flex border-b border-gray-200 pb-2">
-              <span class="font-semibold text-gray-700 w-40">Geburtsjahr:</span>
-              <span class="text-gray-900">{{ person.birth_year }}</span>
+            <div class="grid grid-cols-[140px_1fr] py-1">
+              <span class="font-roboto font-bold text-[18px] leading-[23px] text-light-text">Geburtsjahr:</span>
+              <span class="font-roboto font-normal text-[18px] leading-[23px] text-light-text">{{ person.birth_year }}</span>
             </div>
 
-            <div class="flex border-b border-gray-200 pb-2">
-              <span class="font-semibold text-gray-700 w-40">Geschlecht:</span>
-              <span class="text-gray-900">{{ translateGender(person.gender) }}</span>
+            <div class="grid grid-cols-[140px_1fr] py-1">
+              <span class="font-roboto font-bold text-[18px] leading-[23px] text-light-text">Geschlecht:</span>
+              <span class="font-roboto font-normal text-[18px] leading-[23px] text-light-text">{{ translateGender(person.gender) }}</span>
             </div>
           </div>
 
           <!-- Homeworld Section -->
-          <div class="mt-6" *ngIf="homeworld">
-            <h3 class="text-xl font-bold text-gray-900 mb-3">Heimatplanet:</h3>
+          <div class="mt-6 flex items-center" *ngIf="homeworld">
+            <h3 class="font-roboto font-bold text-[18px] leading-[23px] text-light-text w-[140px]">Heimatplanet:</h3>
             <a
               [routerLink]="['/planeten', getHomeworldId()]"
-              class="inline-block bg-gray-100 hover:bg-gray-200 text-gray-900 font-semibold py-2 px-4 rounded-lg transition-colors duration-200"
+              class="inline-block bg-light-gray hover:bg-light-gray-hover text-black font-roboto font-bold text-[14px] leading-[17px] rounded-[1px] transition-colors duration-200 py-[19px] px-[29px]"
             >
               {{ homeworld.name }}
             </a>
           </div>
+
+           <!-- Movies Section (Light Mode) -->
+          <div class="mt-10" *ngIf="films.length > 0">
+            <h2 class="font-roboto font-bold text-[25px] leading-[30px] text-light-text mb-4">Filme:</h2>
+            <div class="flex flex-wrap gap-4">
+              <div *ngFor="let film of films">
+                <!-- Note: Assuming simple text button for movies in light mode based on "styled like Heimatplanet entry" -->
+                 <button
+                  class="bg-light-gray hover:bg-light-gray-hover text-black font-roboto font-bold text-[14px] leading-[17px] rounded-[1px] transition-colors duration-200 py-[19px] px-[29px]"
+                >
+                  {{ film.title }}
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- Right Column: Image -->
-        <div class="flex items-center justify-center">
-          <div class="w-full max-w-md">
+        <div class="flex items-start justify-center lg:justify-end">
+           <!-- 50% width effectively handled by grid column, aspect ratio 28:15 -->
+          <div class="w-full relative overflow-hidden aspect-[28/15]">
             <img
               [src]="person.imageUrl"
               [alt]="person.name"
               (error)="onImageError($event)"
-              class="w-full h-auto rounded-lg shadow-2xl"
+              class="w-full h-full object-cover"
             />
           </div>
         </div>
       </div>
+    </ng-container>
 
-      <!-- Films Section -->
-      <div *ngIf="films.length > 0" class="px-6 md:px-10 pb-10">
-        <h2 class="text-2xl font-bold text-gray-900 mb-6">Filme:</h2>
+    <!-- DARK MODE LAYOUT -->
+    <div *ngIf="themeService.isDark()" class="bg-light-gray/[0.24] dark:bg-gray-800 rounded-lg shadow-xl overflow-hidden transition-colors duration-300">
 
-        <!-- Horizontal Scrollable Film Cards -->
-        <div class="flex overflow-x-auto space-x-4 pb-4 scrollbar-hide">
-          <div
-            *ngFor="let film of films"
-            class="flex-shrink-0 w-64 bg-gray-100 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300"
-          >
-            <div class="h-32 bg-gray-300 overflow-hidden">
-              <img
-                [src]="film.imageUrl"
-                [alt]="film.title"
-                class="w-full h-full object-cover"
-              />
+        <!-- Header -->
+        <div class="bg-light-text dark:bg-black text-white text-center py-6 transition-colors duration-300">
+          <p class="text-sm uppercase tracking-wide text-star-wars-yellow mb-2">Charakterdetails</p>
+          <h1 class="text-3xl md:text-4xl font-bold">{{ person.name }}</h1>
+        </div>
+
+        <!-- Main Content Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 p-6 md:p-10">
+
+          <!-- Left Column: Details -->
+          <div class="space-y-6">
+            <h2 class="text-2xl font-bold text-light-text dark:text-white mb-4">Details:</h2>
+
+            <!-- Detail Items -->
+            <div class="space-y-3">
+              <div class="flex border-b border-gray-300 dark:border-gray-700 pb-2">
+                <span class="font-semibold text-light-text dark:text-gray-400 w-40">Größe:</span>
+                <span class="text-light-text dark:text-gray-200">{{ person.height !== 'unknown' ? person.height + ' cm' : 'Unbekannt' }}</span>
+              </div>
+
+              <div class="flex border-b border-gray-300 dark:border-gray-700 pb-2">
+                <span class="font-semibold text-light-text dark:text-gray-400 w-40">Gewicht:</span>
+                <span class="text-light-text dark:text-gray-200">{{ person.mass !== 'unknown' ? person.mass + ' kg' : 'Unbekannt' }}</span>
+              </div>
+
+              <div class="flex border-b border-gray-300 dark:border-gray-700 pb-2">
+                <span class="font-semibold text-light-text dark:text-gray-400 w-40">Haarfarbe:</span>
+                <span class="text-light-text dark:text-gray-200 capitalize">{{ person.hair_color }}</span>
+              </div>
+
+              <div class="flex border-b border-gray-300 dark:border-gray-700 pb-2">
+                <span class="font-semibold text-light-text dark:text-gray-400 w-40">Augenfarbe:</span>
+                <span class="text-light-text dark:text-gray-200 capitalize">{{ person.eye_color }}</span>
+              </div>
+
+              <div class="flex border-b border-gray-300 dark:border-gray-700 pb-2">
+                <span class="font-semibold text-light-text dark:text-gray-400 w-40">Geburtsjahr:</span>
+                <span class="text-light-text dark:text-gray-200">{{ person.birth_year }}</span>
+              </div>
+
+              <div class="flex border-b border-gray-300 dark:border-gray-700 pb-2">
+                <span class="font-semibold text-light-text dark:text-gray-400 w-40">Geschlecht:</span>
+                <span class="text-light-text dark:text-gray-200">{{ translateGender(person.gender) }}</span>
+              </div>
             </div>
-            <div class="p-4">
-              <p class="text-xs text-gray-500 mb-1">Episode {{ film.episode_id }}</p>
-              <h4 class="font-bold text-gray-900">{{ film.title }}</h4>
-              <p class="text-sm text-gray-600 mt-1">{{ film.release_date | date: 'dd.MM.yyyy' }}</p>
+
+            <!-- Homeworld Section -->
+            <div class="mt-6" *ngIf="homeworld">
+              <h3 class="text-xl font-bold text-light-text dark:text-white mb-3">Heimatplanet:</h3>
+              <a
+                [routerLink]="['/planeten', getHomeworldId()]"
+                class="inline-block bg-white dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 text-light-text dark:text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-200 shadow-sm border border-gray-200 dark:border-gray-600"
+              >
+                {{ homeworld.name }}
+              </a>
+            </div>
+          </div>
+
+          <!-- Right Column: Image -->
+          <div class="flex items-center justify-center">
+            <div class="w-full max-w-md">
+              <img
+                [src]="person.imageUrl"
+                [alt]="person.name"
+                (error)="onImageError($event)"
+                class="w-full h-auto rounded-lg shadow-2xl"
+              />
             </div>
           </div>
         </div>
-      </div>
+
+        <!-- Films Section -->
+        <div *ngIf="films.length > 0" class="px-6 md:px-10 pb-10">
+          <h2 class="text-2xl font-bold text-light-text dark:text-white mb-6">Filme:</h2>
+
+          <!-- Horizontal Scrollable Film Cards -->
+          <div class="flex overflow-x-auto space-x-4 pb-4 scrollbar-hide">
+            <div
+              *ngFor="let film of films"
+              class="flex-shrink-0 w-64 bg-white dark:bg-gray-700 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300 border border-gray-200 dark:border-gray-600"
+            >
+              <div class="h-32 bg-gray-300 dark:bg-gray-600 overflow-hidden">
+                <img
+                  [src]="film.imageUrl"
+                  [alt]="film.title"
+                  class="w-full h-full object-cover"
+                />
+              </div>
+              <div class="p-4">
+                <p class="text-xs text-light-text/70 dark:text-gray-400 mb-1">Episode {{ film.episode_id }}</p>
+                <h4 class="font-bold text-light-text dark:text-white">{{ film.title }}</h4>
+                <p class="text-sm text-light-text/80 dark:text-gray-300 mt-1">{{ film.release_date | date: 'dd.MM.yyyy' }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
     </div>
-
   </div>
-</div>
 
-<!-- Custom scrollbar styles for horizontal scroll -->
-<style>
-  .scrollbar-hide::-webkit-scrollbar {
-    display: none;
-  }
-  .scrollbar-hide {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
-</style>
+</app-page-container>
