@@ -8,6 +8,13 @@ import { PersonWithId, Planet, Film } from '@core/models';
 import { PageContainerComponent } from '@shared/components/page-container/page-container.component';
 import { LoadingStateComponent } from '@shared/components/loading-state/loading-state.component';
 import { ErrorStateComponent } from '@shared/components/error-state/error-state.component';
+import { DragScrollDirective } from '@shared/directives';
+import {
+  extractIdFromUrl,
+  handleImageError,
+  resolveImageUrl,
+  translateGender as translateGenderUtil
+} from '@shared/utilities';
 
 /**
  * Component for displaying detailed information about a Star Wars character
@@ -28,7 +35,7 @@ import { ErrorStateComponent } from '@shared/components/error-state/error-state.
 @Component({
   selector: 'app-people-detail',
   standalone: true,
-  imports: [CommonModule, RouterModule, PageContainerComponent, LoadingStateComponent, ErrorStateComponent],
+  imports: [CommonModule, RouterModule, PageContainerComponent, LoadingStateComponent, ErrorStateComponent, DragScrollDirective],
   templateUrl: './people-detail.component.html'
 })
 export class PeopleDetailComponent implements OnInit, OnDestroy {
@@ -138,13 +145,10 @@ export class PeopleDetailComponent implements OnInit, OnDestroy {
    * @returns Image URL
    */
   getCharacterImage(): string {
-    if (!this.person) return '';
-    const maybeImageUrl = (this.person as unknown as { imageUrl?: unknown }).imageUrl;
-    if (typeof maybeImageUrl === 'string') {
-      return maybeImageUrl;
-    }
+    const person = this.person;
+    if (!person) return '';
 
-    return this.picsumImageService.getPersonImageUrl(this.person, { width: 600, height: 400 });
+    return resolveImageUrl(person, () => this.picsumImageService.getPersonImageUrl(person));
   }
 
   /**
@@ -153,12 +157,7 @@ export class PeopleDetailComponent implements OnInit, OnDestroy {
    * @returns Image URL
    */
   getFilmImage(film: Film): string {
-    const maybeImageUrl = (film as unknown as { imageUrl?: unknown }).imageUrl;
-    if (typeof maybeImageUrl === 'string') {
-      return maybeImageUrl;
-    }
-
-    return this.picsumImageService.getFilmImageUrl(film, { width: 512, height: 256 });
+    return resolveImageUrl(film, () => this.picsumImageService.getFilmImageUrl(film));
   }
 
   /**
@@ -167,8 +166,7 @@ export class PeopleDetailComponent implements OnInit, OnDestroy {
    * @returns Extracted ID or null
    */
   extractId(url: string): number | null {
-    const match = url.match(/\/(\d+)\/?$/);
-    return match ? parseInt(match[1], 10) : null;
+    return extractIdFromUrl(url);
   }
 
   /**
@@ -176,10 +174,7 @@ export class PeopleDetailComponent implements OnInit, OnDestroy {
    * @param event Image error event
    */
   onImageError(event: Event): void {
-    const img = event.target;
-    if (img instanceof HTMLImageElement) {
-      img.src = 'assets/images/character-placeholder.png';
-    }
+    handleImageError(event);
   }
 
   /**
@@ -196,13 +191,6 @@ export class PeopleDetailComponent implements OnInit, OnDestroy {
    * @returns Translated gender
    */
   translateGender(gender: string): string {
-    const translations: { [key: string]: string } = {
-      'male': 'Männlich',
-      'female': 'Weiblich',
-      'hermaphrodite': 'Hermaphrodit',
-      'n/a': 'Nicht zutreffend',
-      'unknown': 'Unbekannt'
-    };
-    return translations[gender.toLowerCase()] || gender;
+    return translateGenderUtil(gender);
   }
 }

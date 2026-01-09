@@ -159,11 +159,13 @@ describe('PeopleListComponent', () => {
     expect(peopleService.getPeople).toHaveBeenCalled();
   });
 
-  it('should get character image URL', () => {
-    const imageUrl = component.getCharacterImage(mockPerson);
+  it('should set person imageUrl when mapping people', () => {
+    peopleService.getPeople.and.returnValue(of(mockPeople));
 
-    expect(imageUrl).toContain('picsum.photos');
-    expect(imageUrl).toContain('/seed/person-1/');
+    component.ngOnInit();
+
+    expect(component.people[0].imageUrl).toContain('picsum.photos');
+    expect(component.people[0].imageUrl).toContain('/seed/person-1/');
   });
 
   it('should clean up subscriptions on destroy', () => {

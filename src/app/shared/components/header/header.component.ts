@@ -14,11 +14,6 @@ import { StarWarsLogoComponent } from '../star-wars-logo/star-wars-logo.componen
  * - Search bar (UI-only for now)
  * - Theme toggle
  * - Responsive design with mobile menu
- *
- * @example
- * ```html
- * <app-header></app-header>
- * ```
  */
 @Component({
   selector: 'app-header',
@@ -33,16 +28,18 @@ export class HeaderComponent {
   private readonly desktopCompactHeight = 98;
   private readonly mobileHeight = 80;
 
-  /** Current search query */
-  searchQuery: string = '';
-
-  /** Flag to toggle mobile menu */
-  isMobileMenuOpen: boolean = false;
-
-  isCompact: boolean = false;
-
   readonly isDark = this.themeService.isDark;
 
+  searchQuery = '';
+  isMobileMenuOpen = false;
+  isCompact = false;
+
+  /**
+   * #INFO:
+   * Usage of `constructor()` (not `ngOnInit()`) for `syncHeaderHeight()` so CSS
+   * variable is set asap, avoiding first-render layout jump, and also not
+   * necessary as it doesn't depend on template bindings or `@Input()` values.
+   */
   constructor() {
     this.syncHeaderHeight();
   }
@@ -81,35 +78,29 @@ export class HeaderComponent {
   }
 
   /**
-   * Toggles between light and dark theme
-   */
-  toggleTheme(): void {
-    this.themeService.toggleTheme();
-  }
-
-  /**
-   * Handles search submission
-   * Currently logs to console - can be extended to navigate to search results
+   * #INFO:
+   * Currently only logs to console.
+   * Our current SWAPI integration is read-only and implemented as simple GET
+   * requests without query parameters (e.g. no `?search=...`), so a proper
+   * server-side search can't be implemented without extending the service layer
+   * (or doing client-side filtering like `PeopleService.searchPeople()`).
    */
   onSearch(): void {
     if (this.searchQuery.trim()) {
       console.log('[HeaderComponent] Search query:', this.searchQuery);
       // TODO: Implement search functionality
-      // Example: this.router.navigate(['/search'], { queryParams: { q: this.searchQuery } });
     }
   }
 
-  /**
-   * Toggles mobile menu open/closed
-   */
   toggleMobileMenu(): void {
     this.isMobileMenuOpen = !this.isMobileMenuOpen;
   }
 
-  /**
-   * Closes mobile menu (e.g., when a navigation link is clicked)
-   */
   closeMobileMenu(): void {
     this.isMobileMenuOpen = false;
+  }
+
+  toggleTheme(): void {
+    this.themeService.toggleTheme();
   }
 }

@@ -9,6 +9,7 @@ import { Person } from '@core/models';
 import { PageContainerComponent } from '@shared/components/page-container/page-container.component';
 import { LoadingStateComponent } from '@shared/components/loading-state/loading-state.component';
 import { ErrorStateComponent } from '@shared/components/error-state/error-state.component';
+import { extractIdFromUrl, handleImageError, translateGender } from '@shared/utilities';
 
 /**
  * Component for displaying a list of Star Wars characters/people
@@ -34,6 +35,10 @@ import { ErrorStateComponent } from '@shared/components/error-state/error-state.
 export class PeopleListComponent implements OnInit, OnDestroy {
   private peopleService = inject(PeopleService);
   private picsumImageService = inject(PicsumImageService);
+
+  translateGender = translateGender;
+  extractId = extractIdFromUrl;
+  onImageError = handleImageError;
 
   /** Array of people to display */
   people: Array<Person & { imageUrl: string }> = [];
@@ -64,8 +69,6 @@ export class PeopleListComponent implements OnInit, OnDestroy {
 
   /** Subject for managing subscriptions */
   private destroy$ = new Subject<void>();
-
-  private readonly imageCache = new Map<string, string>();
 
   ngOnInit(): void {
     this.loadPeople();
@@ -118,7 +121,7 @@ export class PeopleListComponent implements OnInit, OnDestroy {
 
     this.people = this.allPeople.slice(startIndex, endIndex).map((person) => ({
       ...person,
-      imageUrl: this.getCharacterImage(person)
+      imageUrl: this.picsumImageService.getPersonImageUrl(person)
     }));
     this.totalCount = this.allPeople.length;
     this.currentPage = safePage;
@@ -152,43 +155,5 @@ export class PeopleListComponent implements OnInit, OnDestroy {
    */
   retry(): void {
     this.loadPeople();
-  }
-
-  /**
-   * Extracts ID from SWAPI URL for routing
-   * @param url SWAPI resource URL
-   * @returns Extracted ID or null
-   */
-  extractId(url: string): number | null {
-    const match = url.match(/\/(\d+)\/?$/);
-    return match ? parseInt(match[1], 10) : null;
-  }
-
-  /**
-   * Gets a placeholder image for a character
-   * In a real application, you would fetch actual images from an API
-   * @param person Person object
-   * @returns Image URL
-   */
-  getCharacterImage(person: Person): string {
-    const cached = this.imageCache.get(person.url);
-    if (cached) {
-      return cached;
-    }
-
-    const imageUrl = this.picsumImageService.getPersonImageUrl(person, { width: 600, height: 400 });
-    this.imageCache.set(person.url, imageUrl);
-    return imageUrl;
-  }
-
-  /**
-   * Handles image loading errors by providing a fallback
-   * @param event Image error event
-   */
-  onImageError(event: Event): void {
-    const img = event.target;
-    if (img instanceof HTMLImageElement) {
-      img.src = 'assets/images/character-placeholder.png';
-    }
   }
 }

@@ -40,17 +40,30 @@ This project provides a **complete reference implementation** of the People (Cha
 
 ### Shared Components
 - ✅ `HeaderComponent` - Navigation and search bar
+- ✅ `LoadingStateComponent` - Reusable loading UI
+- ✅ `ErrorStateComponent` - Reusable error UI with optional retry
 - ✅ `AppComponent` - Root component
+
+### Shared Utilities & Directives
+- ✅ `src/app/shared/utilities.ts` - Shared helper functions (e.g. `translateGender()`)
+- ✅ `appDragScroll` directive - Grab-to-drag horizontal scrolling rows (reusable)
+- ✅ `PicsumImageService` - Deterministic seeded placeholder images
 
 ### Configuration & CI/CD
 - ✅ Angular 18 configuration
 - ✅ Tailwind CSS setup
-- ✅ GitHub Actions workflows (deploy, test)
-- ✅ ESLint/Prettier ready
+- ✅ GitHub Actions workflows (deploy, test) + reusable CI workflow
+- ✅ ESLint + Prettier configured (lint enforced in CI)
 
 ---
 
 ## 📝 What You Need to Implement
+
+### 0. Frontpage (Startseite)
+- [ ] Add a simple landing page route (`/`)
+- [ ] Display only the `StarWarsLogoComponent` inside `PageContainerComponent`
+- [ ] Apply generous vertical padding (top + bottom)
+- [ ] Size the logo to ~75-80% of the layout container with a `max-width: 989px`
 
 ### 1. Films Feature
 - [ ] `FilmsListComponent` (list view)
@@ -91,7 +104,6 @@ The fastest approach is to copy the People components and adapt them:
 # Copy PeopleListComponent to FilmsListComponent
 cp people/people-list/people-list.component.ts films/films-list/films-list.component.ts
 cp people/people-list/people-list.component.html films/films-list/films-list.component.html
-cp people/people-list/people-list.component.scss films/films-list/films-list.component.scss
 cp people/people-list/people-list.component.spec.ts films/films-list/films-list.component.spec.ts
 ```
 
@@ -118,7 +130,7 @@ export class FilmsListComponent implements OnInit, OnDestroy {
   films: Film[] = [];  // Changed from people: Person[]
   private allFilms: Film[] = [];
   
-  constructor(private filmsService: FilmsService) {}  // Changed service
+  private filmsService = inject(FilmsService); // Changed service
   
   loadFilms(page: number = this.currentPage): void {
     this.isLoading = true;
@@ -149,10 +161,8 @@ export class FilmsListComponent implements OnInit, OnDestroy {
     // Same client-side pagination pattern as PeopleListComponent
   }
   
-  getFilmImage(film: Film): string {
-    const id = this.extractId(film.url);
-    return `https://i.redd.it/twtlr27wdt841.jpg`;
-  }
+  // Use PicsumImageService for deterministic seeded placeholder images
+  // (see People feature for reference mapping `imageUrl` onto items)
 }
 ```
 
@@ -176,7 +186,7 @@ export class FilmsListComponent implements OnInit, OnDestroy {
 ```html
 <div *ngFor="let film of films" class="bg-white rounded-lg shadow-lg...">
   <div class="relative h-64 bg-gray-200 overflow-hidden">
-    <img [src]="getFilmImage(film)" [alt]="film.title" ... />
+    <img [src]="film.imageUrl" [alt]="film.title" ... />
   </div>
   
   <div class="p-6">
@@ -232,11 +242,9 @@ export class FilmsDetailComponent implements OnInit, OnDestroy {
   characters: Person[] = [];
   planets: Planet[] = [];
   starships: Starship[] = [];
-  
-  constructor(
-    private route: ActivatedRoute,
-    private filmsService: FilmsService
-  ) {}
+
+  private route = inject(ActivatedRoute);
+  private filmsService = inject(FilmsService);
   
   ngOnInit(): void {
     this.route.params
@@ -473,7 +481,7 @@ export class [Resource]ListComponent implements OnInit, OnDestroy {
   // Cleanup
   private destroy$ = new Subject<void>();
   
-  constructor(private service: [Resource]Service) {}
+  private service = inject([Resource]Service);
   
   ngOnInit(): void {
     this.loadItems();
@@ -488,8 +496,8 @@ export class [Resource]ListComponent implements OnInit, OnDestroy {
   loadNextPage(): void { /* ... */ }
   loadPreviousPage(): void { /* ... */ }
   retry(): void { /* ... */ }
-  extractId(url: string): number | null { /* ... */ }
-  getImage(item: [Type]): string { /* ... */ }
+  // Prefer shared utilities for common helpers
+  extractId = extractIdFromUrl;
 }
 ```
 
@@ -508,11 +516,9 @@ export class [Resource]DetailComponent implements OnInit, OnDestroy {
   errorMessage = '';
   
   private destroy$ = new Subject<void>();
-  
-  constructor(
-    private route: ActivatedRoute,
-    private service: [Resource]Service
-  ) {}
+
+  private route = inject(ActivatedRoute);
+  private service = inject([Resource]Service);
   
   ngOnInit(): void {
     this.route.params
@@ -615,19 +621,11 @@ this.service.getData()
 
 ### Pattern 5: Image URLs
 ```typescript
-// Star Wars Visual Guide provides images
-// Characters: https://farm2.staticflickr.com/1496/26127498974_0c8350fdd2_o.jpg
-// Films: https://upload.wikimedia.org/wikipedia/en/thumb/4/40/Star_Wars_Phantom_Menace_poster.jpg/250px-Star_Wars_Phantom_Menace_poster.jpg
-// Planets: https://i.ytimg.com/vi/MHtlHpol2jg/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLDw9QwUELRKZ9VlRjIPQagplfX65g
-// Starships: https://i.pinimg.com/736x/2d/7e/39/2d7e39faf673c789abacc996c114a3a5.jpg
+// The app uses PicsumImageService for deterministic seeded placeholder images.
+// Map `imageUrl` onto items when loading data, and use shared fallback handling.
 
-getImage(item: Type): string {
-  const id = this.extractId(item.url);
-  return `https://i.pinimg.com/736x/40/2d/63/402d63803e18e9bf496c6b92ef675f06.jpg`;
-}
-
-onImageError(event: any): void {
-  event.target.src = 'assets/images/placeholder.png';
+onImageError(event: Event): void {
+  handleImageError(event);
 }
 ```
 

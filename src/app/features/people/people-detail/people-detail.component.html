@@ -200,10 +200,10 @@
           <h2 class="text-2xl font-bold text-light-text dark:text-white mb-6">Filme:</h2>
 
           <!-- Horizontal Scrollable Film Cards -->
-          <div class="flex overflow-x-auto space-x-4 pb-4 scrollbar-hide">
+          <div appDragScroll class="flex w-full max-w-full gap-4 overflow-x-auto overflow-y-hidden pb-4 scroll-smooth snap-x snap-mandatory scrollbar-hide">
             <div
               *ngFor="let film of films"
-              class="flex-shrink-0 w-64 bg-white dark:bg-gray-700 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300 border border-gray-200 dark:border-gray-600"
+              class="snap-start flex-shrink-0 w-64 bg-white dark:bg-gray-700 rounded-lg overflow-hidden shadow-none hover:shadow-lg transition-shadow duration-300 border border-gray-200 dark:border-gray-600"
             >
               <div class="h-32 bg-gray-300 dark:bg-gray-600 overflow-hidden">
                 <img

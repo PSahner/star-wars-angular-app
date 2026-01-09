@@ -29,20 +29,28 @@ A modern, production-ready Angular 18 application for exploring the Star Wars un
   - Grid view with character cards
   - Detailed character view with related data
   - Client-side pagination support
-  - Loading states and error handling
+  - Loading states and error handling (reusable shared components)
 - **Services Layer:** Full service architecture
   - Base `SwapiService` with HTTP client, caching, retry logic
   - Feature services for People, Films, Starships, Planets
   - Comprehensive error handling
+- **Reusable UI building blocks**
+  - `LoadingStateComponent` + `ErrorStateComponent` for consistent async UI
+  - `translateGender()` and other shared helpers in `src/app/shared/utilities.ts`
+  - `appDragScroll` directive for grab-to-drag horizontal scrolling rows
+  - `PicsumImageService` for deterministic seeded placeholder images
 - **Responsive Design:** Mobile-first approach with Tailwind CSS
+- **Theming:** Light/Dark mode toggle
 - **Type Safety:** Full TypeScript strict mode
-- **Testing:** Unit tests with Jasmine/Karma
-- **CI/CD:** GitHub Actions with Aikido Safe Chain security scanning
+- **Testing:** Unit tests with Jasmine/Karma (coverage thresholds configured)
+- **Code Quality:** ESLint + Prettier (CI enforces lint + tests)
+- **CI/CD:** GitHub Actions (reusable workflow for lint/test/build, optional Codecov upload)
 
 ### To Be Implemented 🚧
 - **Films (Filme):** List and detail views
 - **Planets (Planeten):** List and detail views
 - **Starships (Optional):** List and detail views
+- **Frontpage (Startseite):** Simple landing page (logo-only)
 - **Search Functionality:** Global search across resources
 - **Modal Forms:** UI-only "Add" forms (as per requirements)
 
@@ -60,7 +68,8 @@ A modern, production-ready Angular 18 application for exploring the Star Wars un
 - **Package Manager:** npm
 - **Build Tool:** Angular CLI
 - **Testing:** Jasmine + Karma
-- **Linting:** ESLint (ready for configuration)
+- **Linting:** ESLint (Angular ESLint, flat config)
+- **Formatting:** Prettier
 - **Version Control:** Git
 
 ### CI/CD & Deployment
@@ -76,8 +85,9 @@ A modern, production-ready Angular 18 application for exploring the Star Wars un
 star-wars-angular-app/
 ├── .github/
 │   └── workflows/
-│       ├── deploy.yml          # Deployment workflow
-│       └── test.yml            # Testing workflow
+│       ├── reusable-ci.yml     # Reusable CI workflow (lint/test/build)
+│       ├── deploy.yml          # Deployment workflow (GitHub Pages)
+│       └── test.yml            # CI workflow (calls reusable-ci.yml)
 ├── src/
 │   ├── app/
 │   │   ├── core/               # Core functionality
@@ -97,16 +107,15 @@ star-wars-angular-app/
 │   │   │       ├── people-list/
 │   │   │       │   ├── people-list.component.ts
 │   │   │       │   ├── people-list.component.html
-│   │   │       │   ├── people-list.component.scss
 │   │   │       │   └── people-list.component.spec.ts
 │   │   │       └── people-detail/
 │   │   │           ├── people-detail.component.ts
 │   │   │           ├── people-detail.component.html
-│   │   │           ├── people-detail.component.scss
 │   │   │           └── people-detail.component.spec.ts
 │   │   ├── shared/             # Shared components
-│   │   │   └── components/
-│   │   │       └── header/
+│   │   │   ├── components/      # Reusable UI components (header, footer, loading/error state, ...)
+│   │   │   ├── directives/      # Reusable directives (e.g. appDragScroll)
+│   │   │   └── utilities.ts     # Shared helper functions
 │   │   ├── app.component.ts    # Root component
 │   │   ├── app.config.ts       # App configuration
 │   │   └── app.routes.ts       # Routing configuration
@@ -117,7 +126,9 @@ star-wars-angular-app/
 ├── package.json                # Dependencies
 ├── tailwind.config.js          # Tailwind configuration
 ├── tsconfig.json               # TypeScript configuration
-├── IMPLEMENTATION_GUIDE.md     # Development guide
+├── docs/
+│   ├── IMPLEMENTATION_GUIDE.md # Development guide
+│   └── QUICKSTART.md           # Quick start guide
 └── README.md                   # This file
 ```
 
@@ -164,7 +175,9 @@ star-wars-angular-app/
 | `npm run build:prod` | Build for production with GitHub Pages base-href |
 | `npm test` | Run unit tests in watch mode |
 | `npm run test:ci` | Run tests once in headless mode |
-| `npm run lint` | Lint code (requires configuration) |
+| `npm run lint` | Lint code |
+| `npm run format` | Format code with Prettier |
+| `npm run format:check` | Check formatting (Prettier) |
 
 ### Development Workflow
 
@@ -201,7 +214,7 @@ star-wars-angular-app/
 - **Components:** Standalone components only
 - **Naming:** Kebab-case for files, PascalCase for classes
 - **Documentation:** JSDoc comments for public methods
-- **Testing:** Aim for 80%+ coverage for components (thresholds are not currently enforced)
+- **Testing:** Coverage thresholds are enforced in Karma (see `karma.conf.js`)
 
 ---
 
@@ -226,7 +239,7 @@ Karma prints an Istanbul coverage summary at the end of a run:
 - **Statements/Lines/Functions** are basic execution coverage.
 - **Branches** measures decision coverage (e.g. both sides of `if/else`, `switch` cases, ternaries, `&&`/`||` short-circuit paths).
 
-The red/yellow/green colors indicate whether the numbers meet the configured thresholds. If no thresholds are enforced in CI, treat the summary as informational.
+The red/yellow/green colors indicate whether the numbers meet the configured thresholds.
 
 View coverage report:
 ```bash
@@ -344,7 +357,7 @@ The SWAPI Reborn API is **read-only** (GET requests). List endpoints return **pl
 
 ### Development Guide
 
-See [IMPLEMENTATION_GUIDE.md](./IMPLEMENTATION_GUIDE.md) for detailed instructions on:
+See [docs/IMPLEMENTATION_GUIDE.md](./docs/IMPLEMENTATION_GUIDE.md) for detailed instructions on:
 - Implementing Films feature
 - Implementing Planets feature
 - Code patterns and best practices
@@ -405,7 +418,7 @@ This project is licensed under the MIT License.
 ## 🙏 Acknowledgments
 
 - **SWAPI:** The Star Wars API (https://swapi.info/)
-- **Star Wars Visual Guide:** Character/film images (https://starwars-visualguide.com/)
+- **Lorem Picsum:** Seeded placeholder images (https://picsum.photos/)
 - **Angular Team:** For the amazing framework
 - **Tailwind CSS:** For the utility-first CSS framework
 
@@ -414,7 +427,7 @@ This project is licensed under the MIT License.
 ## 📞 Support
 
 For questions or issues:
-1. Check [IMPLEMENTATION_GUIDE.md](./IMPLEMENTATION_GUIDE.md)
+1. Check [docs/IMPLEMENTATION_GUIDE.md](./docs/IMPLEMENTATION_GUIDE.md)
 2. Review existing issues on GitHub
 3. Create a new issue with detailed description
 

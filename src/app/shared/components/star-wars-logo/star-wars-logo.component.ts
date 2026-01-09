@@ -8,5 +8,5 @@ import { CommonModule } from '@angular/common';
   templateUrl: './star-wars-logo.component.html'
 })
 export class StarWarsLogoComponent {
-  @Input() className: string = '';
+  @Input() className = '';
 }

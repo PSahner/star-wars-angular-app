@@ -19,7 +19,7 @@
         <a
           *ngFor="let person of people"
           [routerLink]="['/charaktere', extractId(person.url)]"
-          class="group bg-light-gray/[0.24] dark:bg-gray-800 rounded-none shadow-none hover:shadow-lg overflow-hidden transition-all duration-300 flex flex-col h-full cursor-pointer"
+          class="group bg-light-gray/[0.24] dark:bg-gray-800 rounded-none dark:rounded-lg shadow-none hover:shadow-lg dark:border dark:border-gray-600 overflow-hidden transition-all duration-300 flex flex-col h-full cursor-pointer"
         >
           <!-- Character Image -->
           <div class="relative w-full aspect-[16/13] bg-gray-200 dark:bg-gray-700 overflow-hidden">
@@ -38,17 +38,17 @@
             <h3 class="font-roboto font-bold text-[25px] leading-[30px] text-light-text dark:text-white mb-3">{{ person.name }}</h3>
 
             <!-- Character Info -->
-            <div class="space-y-2 font-roboto font-normal text-[14px] leading-[17px] text-light-text dark:text-gray-400 mb-4 flex-grow">
+            <div class="space-y-0 dark:space-y-2 font-roboto font-normal text-[14px] leading-[17px] text-light-text dark:text-gray-400 mb-4 flex-grow">
               <div class="flex items-center">
-                <span class="font-semibold w-32">Geburtsjahr:</span>
+                <span class="font-semibold dark:w-32 mr-[3px]">Geburtsjahr:</span>
                 <span>{{ person.birth_year }}</span>
               </div>
               <div class="flex items-center">
-                <span class="font-semibold w-32">Geschlecht:</span>
-                <span class="capitalize">{{ person.gender === 'male' ? 'Männlich' : person.gender === 'female' ? 'Weiblich' : person.gender }}</span>
+                <span class="font-semibold dark:w-32 mr-[3px]">Geschlecht:</span>
+                <span class="capitalize">{{ translateGender(person.gender) }}</span>
               </div>
               <div class="flex items-center">
-                <span class="font-semibold w-32">Größe:</span>
+                <span class="font-semibold dark:w-32 mr-[3px]">Größe:</span>
                 <span>{{ person.height }} cm</span>
               </div>
             </div>
