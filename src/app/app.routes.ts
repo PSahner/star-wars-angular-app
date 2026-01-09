@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { PeopleListComponent } from './features/people/people-list/people-list.component';
 import { PeopleDetailComponent } from './features/people/people-detail/people-detail.component';
+import { FrontpageComponent } from './features/frontpage/frontpage.component';
 
 /**
  * Application routing configuration
@@ -17,11 +18,11 @@ import { PeopleDetailComponent } from './features/people/people-detail/people-de
  * Note: Film and Planet routes are placeholders for user implementation
  */
 export const routes: Routes = [
-  // Root redirect
+  // Root / Frontpage
   {
     path: '',
-    redirectTo: '/charaktere',
-    pathMatch: 'full'
+    component: FrontpageComponent,
+    title: 'Star Wars'
   },
 
   // People/Characters routes (COMPLETE REFERENCE IMPLEMENTATION)
@@ -63,6 +64,6 @@ export const routes: Routes = [
   // Wildcard route - redirect to home
   {
     path: '**',
-    redirectTo: '/charaktere'
+    redirectTo: '/'
   }
 ];

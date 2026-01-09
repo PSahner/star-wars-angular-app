@@ -458,6 +458,4 @@ For questions or issues:
 
 ---
 
-**Built with ❤️ using Angular 18 and Tailwind CSS**
-
-May the Force be with you! 🌌
+**May the Force be with you! 🌌**

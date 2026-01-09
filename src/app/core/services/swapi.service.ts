@@ -10,30 +10,14 @@ import { catchError, map, retry, shareReplay, tap } from 'rxjs/operators';
  * - Error handling
  * - Retry logic
  * - Optional caching mechanism
- *
- * @example
- * ```typescript
- * export class PeopleService extends SwapiService {
- *   constructor() {
- *     super(inject(HttpClient));
- *   }
- * }
- * ```
  */
 @Injectable({
   providedIn: 'root'
 })
 export class SwapiService {
-  /** Base URL for SWAPI Reborn API */
   protected readonly baseUrl = 'https://swapi.info/api';
-
-  /** Number of retry attempts for failed requests */
   protected readonly retryAttempts = 3;
-
-  /** Cache for API responses (URL -> Observable) */
   private cache = new Map<string, Observable<unknown>>();
-
-  /** Flag to enable/disable caching */
   protected enableCache = true;
 
   protected readonly http = inject(HttpClient);
@@ -142,11 +126,6 @@ export class SwapiService {
    *
    * @param url The full resource URL (e.g., 'https://swapi.info/api/people/1/')
    * @returns The extracted ID, or null if extraction fails
-   *
-   * @example
-   * ```typescript
-   * extractIdFromUrl('https://swapi.info/api/people/1/') // Returns: 1
-   * ```
    */
   protected extractIdFromUrl(url: string): number | null {
     const match = url.match(/\/(\d+)\/?$/);

@@ -1,7 +1,7 @@
 <!-- People List Container -->
-<app-page-container>
+<app-page-container classNames="bg-sw-white dark:bg-gray-900 text-sw-black dark:text-sw-white">
     <!-- Page Title -->
-    <h1 class="font-roboto font-bold text-[75px] leading-[90px] text-center mt-[151.5px] mb-[144px] text-light-text dark:text-white">
+    <h1 class="font-roboto font-bold text-[75px] leading-[90px] text-center mt-[151.5px] mb-[144px]">
       Charaktere
     </h1>
 
@@ -19,7 +19,7 @@
         <a
           *ngFor="let person of people"
           [routerLink]="['/charaktere', extractId(person.url)]"
-          class="group bg-light-gray/[0.24] dark:bg-gray-800 rounded-none dark:rounded-lg shadow-none hover:shadow-lg dark:border dark:border-gray-600 overflow-hidden transition-all duration-300 flex flex-col h-full cursor-pointer"
+          class="group bg-sw-gray/[0.24] dark:bg-gray-800 rounded-none dark:rounded-lg shadow-none hover:shadow-lg dark:border dark:border-gray-600 overflow-hidden transition-all duration-300 flex flex-col h-full cursor-pointer"
         >
           <!-- Character Image -->
           <div class="relative w-full aspect-[16/13] bg-gray-200 dark:bg-gray-700 overflow-hidden">
@@ -30,15 +30,15 @@
               class="w-full h-full object-cover"
             />
             <!-- Overlay gradient -->
-            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-100 group-hover:opacity-0 transition-opacity duration-300"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-sw-black/60 to-transparent opacity-100 group-hover:opacity-0 transition-opacity duration-300"></div>
           </div>
 
           <!-- Card Content -->
           <div class="p-[24px] flex-grow flex flex-col">
-            <h3 class="font-roboto font-bold text-[25px] leading-[30px] text-light-text dark:text-white mb-3">{{ person.name }}</h3>
+            <h3 class="font-roboto font-bold text-[25px] leading-[30px] mb-3">{{ person.name }}</h3>
 
             <!-- Character Info -->
-            <div class="space-y-0 dark:space-y-2 font-roboto font-normal text-[14px] leading-[17px] text-light-text dark:text-gray-400 mb-4 flex-grow">
+            <div class="space-y-0 dark:space-y-2 font-roboto font-normal text-[14px] leading-[17px] dark:text-gray-400 mb-4 flex-grow">
               <div class="flex items-center">
                 <span class="font-semibold dark:w-32 mr-[3px]">Geburtsjahr:</span>
                 <span>{{ person.birth_year }}</span>
@@ -55,7 +55,7 @@
 
             <!-- More Info Text -->
             <span
-              class="inline-block font-roboto font-bold text-[12px] leading-[14px] text-light-text dark:text-star-wars-yellow group-hover:underline transition-colors duration-200"
+              class="inline-block font-roboto font-bold text-[12px] leading-[14px] dark:text-sw-yellow group-hover:underline transition-colors duration-200"
             >
               Mehr Informationen...
             </span>
@@ -70,12 +70,12 @@
             (click)="loadPreviousPage()"
             [disabled]="!hasPreviousPage"
             [ngClass]="!hasPreviousPage ? 'opacity-50 cursor-not-allowed' : ''"
-            class="bg-gray-800 dark:bg-gray-700 hover:bg-gray-700 dark:hover:bg-gray-600 text-white font-semibold py-2 px-6 rounded-lg transition-colors duration-200 disabled:hover:bg-gray-800 dark:disabled:hover:bg-gray-700"
+            class="bg-gray-800 dark:bg-gray-700 hover:bg-gray-700 dark:hover:bg-gray-600 text-sw-white font-semibold py-2 px-6 rounded-lg transition-colors duration-200 disabled:hover:bg-gray-800 dark:disabled:hover:bg-gray-700"
           >
             ← Zurück
           </button>
 
-          <span class="text-light-text dark:text-gray-300 font-medium">
+          <span class="dark:text-gray-300 font-medium">
             Seite {{ currentPage }}
           </span>
 
@@ -83,14 +83,14 @@
             (click)="loadNextPage()"
             [disabled]="!hasNextPage"
             [ngClass]="!hasNextPage ? 'opacity-50 cursor-not-allowed' : ''"
-            class="bg-gray-800 dark:bg-gray-700 hover:bg-gray-700 dark:hover:bg-gray-600 text-white font-semibold py-2 px-6 rounded-lg transition-colors duration-200 disabled:hover:bg-gray-800 dark:disabled:hover:bg-gray-700"
+            class="bg-gray-800 dark:bg-gray-700 hover:bg-gray-700 dark:hover:bg-gray-600 text-sw-white font-semibold py-2 px-6 rounded-lg transition-colors duration-200 disabled:hover:bg-gray-800 dark:disabled:hover:bg-gray-700"
           >
             Weiter →
           </button>
         </div>
 
         <!-- Total Count Info -->
-        <p class="text-center mt-6 text-light-text dark:text-gray-400">
+        <p class="text-center mt-6 dark:text-gray-400">
           Gesamt: {{ totalCount }} Charaktere
         </p>
       </div>
@@ -98,7 +98,7 @@
 
     <!-- Empty State -->
     <div *ngIf="!isLoading && !errorMessage && people.length === 0" class="my-[144px] text-center py-12">
-      <p class="text-light-text dark:text-gray-400 text-lg">Keine Charaktere gefunden.</p>
+      <p class="dark:text-gray-400 text-lg">Keine Charaktere gefunden.</p>
     </div>
 
 </app-page-container>

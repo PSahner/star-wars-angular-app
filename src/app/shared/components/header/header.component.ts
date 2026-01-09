@@ -1,5 +1,5 @@
 import { Component, HostListener, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgClass, NgIf } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ThemeService } from '../../../core/services/theme.service';
@@ -18,7 +18,7 @@ import { StarWarsLogoComponent } from '../star-wars-logo/star-wars-logo.componen
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, StarWarsLogoComponent],
+  imports: [NgClass, NgIf, RouterModule, FormsModule, StarWarsLogoComponent],
   templateUrl: './header.component.html'
 })
 export class HeaderComponent {

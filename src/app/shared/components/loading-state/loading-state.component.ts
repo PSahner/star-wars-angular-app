@@ -1,10 +1,15 @@
 import { Component, Input } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
+/**
+ * Loading state component.
+ *
+ * Features:
+ * - Spinner with customizable message
+ */
 @Component({
   selector: 'app-loading-state',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './loading-state.component.html'
 })
 export class LoadingStateComponent {

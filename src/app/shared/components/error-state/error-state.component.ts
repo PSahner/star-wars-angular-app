@@ -1,10 +1,17 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgIf } from '@angular/common';
 
+/**
+ * Error state component.
+ *
+ * Features:
+ * - Displays an error title/message
+ * - Optional retry action
+ */
 @Component({
   selector: 'app-error-state',
   standalone: true,
-  imports: [CommonModule],
+  imports: [NgIf],
   templateUrl: './error-state.component.html'
 })
 export class ErrorStateComponent {

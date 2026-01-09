@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgClass, NgFor, NgIf } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -20,16 +20,11 @@ import { extractIdFromUrl, handleImageError, translateGender } from '@shared/uti
  * - Error handling with user-friendly messages
  * - Navigation to detail view
  * - Pagination support
- *
- * @example
- * ```html
- * <app-people-list></app-people-list>
- * ```
  */
 @Component({
   selector: 'app-people-list',
   standalone: true,
-  imports: [CommonModule, RouterModule, PageContainerComponent, LoadingStateComponent, ErrorStateComponent],
+  imports: [NgClass, NgFor, NgIf, RouterModule, PageContainerComponent, LoadingStateComponent, ErrorStateComponent],
   templateUrl: './people-list.component.html'
 })
 export class PeopleListComponent implements OnInit, OnDestroy {
@@ -40,34 +35,19 @@ export class PeopleListComponent implements OnInit, OnDestroy {
   extractId = extractIdFromUrl;
   onImageError = handleImageError;
 
-  /** Array of people to display */
   people: Array<Person & { imageUrl: string }> = [];
-
-  /** Full array of people from the API (used for client-side pagination) */
+  // Full array of people from the API (used for client-side pagination)
   private allPeople: Person[] = [];
-
-  /** Loading state flag */
-  isLoading: boolean = true;
-
-  /** Error message to display */
-  errorMessage: string = '';
-
-  /** Current page number */
-  currentPage: number = 1;
-
-  /** Items per page for client-side pagination */
-  private readonly pageSize: number = 12;
-
-  /** Total count of people */
-  totalCount: number = 0;
-
-  /** Flag for next page availability */
-  hasNextPage: boolean = false;
-
-  /** Flag for previous page availability */
-  hasPreviousPage: boolean = false;
-
-  /** Subject for managing subscriptions */
+  isLoading = true;
+  errorMessage = '';
+  currentPage = 1;
+  // Items per page for client-side pagination
+  private readonly pageSize = 12;
+  // Total count of people
+  totalCount = 0;
+  hasNextPage = false;
+  hasPreviousPage = false;
+  // Subject for managing subscriptions
   private destroy$ = new Subject<void>();
 
   ngOnInit(): void {
@@ -112,6 +92,10 @@ export class PeopleListComponent implements OnInit, OnDestroy {
       });
   }
 
+  /**
+   * Applies client-side pagination to the already loaded people list.
+   * @param page Page number to apply
+   */
   private applyPage(page: number): void {
     const totalPages = Math.max(1, Math.ceil(this.allPeople.length / this.pageSize));
     const safePage = Math.min(Math.max(page, 1), totalPages);

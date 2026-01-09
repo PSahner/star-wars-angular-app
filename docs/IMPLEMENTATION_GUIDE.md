@@ -184,7 +184,7 @@ export class FilmsListComponent implements OnInit, OnDestroy {
 **Example card structure:**
 
 ```html
-<div *ngFor="let film of films" class="bg-white rounded-lg shadow-lg...">
+<div *ngFor="let film of films" class="bg-sw-white rounded-lg shadow-lg...">
   <div class="relative h-64 bg-gray-200 overflow-hidden">
     <img [src]="film.imageUrl" [alt]="film.title" ... />
   </div>
@@ -798,8 +798,8 @@ Ensure all features maintain consistency:
 - Related items in horizontal scroll
 
 ### Colors & Styling
-- Star Wars yellow: `#FFE81F` (text-star-wars-yellow)
-- Black background: `#000000` (bg-black)
+- Star Wars yellow: `#FFE81F` (text-sw-yellow)
+- Black background: `#000000` (bg-sw-black)
 - Use Tailwind utility classes consistently
 
 ---

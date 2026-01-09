@@ -1,10 +1,15 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
+/**
+ * Application footer component.
+ *
+ * Features:
+ * - Displays current year and attribution link
+ */
 @Component({
   selector: 'app-footer',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './footer.component.html'
 })
 export class FooterComponent {

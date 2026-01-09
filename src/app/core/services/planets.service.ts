@@ -7,18 +7,6 @@ import { Planet, PlanetWithId, Person, Film } from '@core/models';
 /**
  * Service for managing Star Wars planets data from SWAPI
  * Extends base SwapiService with planet-specific functionality
- *
- * @example
- * ```typescript
- * // In a component:
- * constructor(private planetsService: PlanetsService) {}
- *
- * ngOnInit() {
- *   this.planetsService.getPlanets().subscribe(response => {
- *     this.planets = response.results;
- *   });
- * }
- * ```
  */
 @Injectable({
   providedIn: 'root'

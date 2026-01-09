@@ -30,11 +30,11 @@ module.exports = {
         'xs': '400px',
       },
       colors: {
-        'star-wars-yellow': '#FFE81F',
-        'space-gray': '#1a1a1a',
-        'light-text': '#10172C',
-        'light-gray': '#BBBBBB',
-        'light-gray-hover': '#A0A0A0',
+        'sw-yellow': '#FFE81F',
+        'sw-black': '#10172C',
+        'sw-gray': '#BBBBBB',
+        'sw-gray-hover': '#A0A0A0',
+        'sw-white': '#FFFFFF'
       },
       fontFamily: {
         'star-wars': ['Star Wars', 'Arial', 'sans-serif'],

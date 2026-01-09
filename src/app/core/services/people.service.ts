@@ -7,18 +7,6 @@ import { Person, PersonWithId, Film, Planet } from '@core/models';
 /**
  * Service for managing Star Wars characters/people data from SWAPI
  * Extends base SwapiService with people-specific functionality
- *
- * @example
- * ```typescript
- * // In a component:
- * constructor(private peopleService: PeopleService) {}
- *
- * ngOnInit() {
- *   this.peopleService.getPeople().subscribe(response => {
- *     this.people = response;
- *   });
- * }
- * ```
  */
 @Injectable({
   providedIn: 'root'

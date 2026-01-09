@@ -7,18 +7,6 @@ import { Starship, StarshipWithId, Person, Film } from '@core/models';
 /**
  * Service for managing Star Wars starships data from SWAPI
  * Extends base SwapiService with starship-specific functionality
- *
- * @example
- * ```typescript
- * // In a component:
- * constructor(private starshipsService: StarshipsService) {}
- *
- * ngOnInit() {
- *   this.starshipsService.getStarships().subscribe(response => {
- *     this.starships = response.results;
- *   });
- * }
- * ```
  */
 @Injectable({
   providedIn: 'root'

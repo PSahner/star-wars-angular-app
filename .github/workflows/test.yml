@@ -15,6 +15,7 @@ jobs:
     uses: ./.github/workflows/reusable-ci.yml
     with:
       node_version: '20'
+      use_npm_cache: true
       run_build: true
       build_command: npm run build
       run_codecov: true

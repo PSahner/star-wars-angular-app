@@ -18,8 +18,8 @@ describe('StarWarsLogoComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should apply className to svg via ngClass', () => {
-    component.className = 'h-10 w-10';
+  it('should apply classNames to svg via ngClass', () => {
+    component.classNames = 'h-10 w-10';
     fixture.detectChanges();
 
     const el: HTMLElement = fixture.nativeElement;

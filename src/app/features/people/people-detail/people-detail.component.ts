@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { DatePipe, NgFor, NgIf } from '@angular/common';
 import { RouterModule, ActivatedRoute } from '@angular/router';
 import { Subject, forkJoin, of } from 'rxjs';
 import { takeUntil, switchMap } from 'rxjs/operators';
@@ -26,16 +26,11 @@ import {
  * - Related films as horizontal scrollable cards
  * - Loading state with spinner
  * - Error handling
- *
- * @example
- * ```html
- * <app-people-detail></app-people-detail>
- * ```
  */
 @Component({
   selector: 'app-people-detail',
   standalone: true,
-  imports: [CommonModule, RouterModule, PageContainerComponent, LoadingStateComponent, ErrorStateComponent, DragScrollDirective],
+  imports: [DatePipe, NgFor, NgIf, RouterModule, PageContainerComponent, LoadingStateComponent, ErrorStateComponent, DragScrollDirective],
   templateUrl: './people-detail.component.html'
 })
 export class PeopleDetailComponent implements OnInit, OnDestroy {
@@ -44,22 +39,12 @@ export class PeopleDetailComponent implements OnInit, OnDestroy {
   private picsumImageService = inject(PicsumImageService);
   public themeService = inject(ThemeService);
 
-  /** Current person/character */
   person: (PersonWithId & { imageUrl: string }) | null = null;
-
-  /** Character's homeworld */
   homeworld: Planet | null = null;
-
-  /** Films the character appears in */
   films: Array<Film & { imageUrl: string }> = [];
-
-  /** Loading state flag */
-  isLoading: boolean = true;
-
-  /** Error message to display */
-  errorMessage: string = '';
-
-  /** Subject for managing subscriptions */
+  isLoading = true;
+  errorMessage = '';
+  // Subject for managing subscriptions
   private destroy$ = new Subject<void>();
 
   ngOnInit(): void {

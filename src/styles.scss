@@ -22,10 +22,11 @@ body {
 
 :root {
   --app-header-height: 80px;
+  --app-footer-height: 79px;
 }
 
 body {
-  @apply bg-white dark:bg-gray-900 text-light-text dark:text-gray-100 transition-colors duration-300;
+  @apply bg-sw-white dark:bg-gray-900 text-sw-black dark:text-gray-100 transition-colors duration-300;
 }
 
 /* Smooth scrolling */

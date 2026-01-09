@@ -7,18 +7,6 @@ import { Film, FilmWithId, Person, Planet, Starship } from '@core/models';
 /**
  * Service for managing Star Wars films data from SWAPI
  * Extends base SwapiService with film-specific functionality
- *
- * @example
- * ```typescript
- * // In a component:
- * constructor(private filmsService: FilmsService) {}
- *
- * ngOnInit() {
- *   this.filmsService.getFilms().subscribe(response => {
- *     this.films = response.results;
- *   });
- * }
- * ```
  */
 @Injectable({
   providedIn: 'root'
