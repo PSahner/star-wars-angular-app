@@ -1,6 +1,6 @@
 <!-- Header Navigation -->
 <header
-  class="bg-sw-white dark:bg-sw-black text-sw-black dark:text-sw-white fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out border-b border-[#10172C26] dark:border-gray-800 h-[var(--app-header-height)]"
+  class="bg-sw-white dark:bg-sw-dark-blue text-sw-dark-blue dark:text-gray-100 fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out border-b border-[#10172C26] dark:border-gray-800 h-[var(--app-header-height)]"
 >
   <div class="container mx-auto px-4 h-full">
     <div class="flex items-center justify-between h-full">
@@ -14,7 +14,7 @@
         <div class="flex-shrink-0 flex items-center h-full">
           <a
             routerLink="/"
-            class="flex items-center transition-all duration-300 ease-in-out mr-0 text-sw-black dark:text-sw-white"
+            class="flex items-center transition-all duration-300 ease-in-out mr-0 text-sw-dark-blue dark:text-gray-100"
             [ngClass]="isCompact ? 'md:mr-[56px]' : 'md:mr-[76px]'"
           >
             <app-star-wars-logo
@@ -29,28 +29,28 @@
           [ngClass]="isCompact ? 'space-x-4' : 'space-x-8'"
         >
           <a
-            routerLink="/filme"
-            routerLinkActive="text-sw-black dark:text-sw-yellow font-bold"
+            routerLink="/films"
+            routerLinkActive="text-sw-dark-blue dark:text-sw-yellow font-bold"
             #rlaFilme="routerLinkActive"
-            class="text-sw-black dark:text-sw-white hover:text-gray-600 dark:hover:text-sw-yellow transition-colors duration-200 py-2 text-[14px] leading-[17px] font-normal"
+            class="text-sw-dark-blue dark:text-gray-100 hover:text-gray-600 dark:hover:text-sw-yellow transition-colors duration-200 py-2 text-[14px] leading-[17px] font-normal"
           >
-            <span [ngClass]="rlaFilme.isActive ? 'border-b border-sw-black dark:border-sw-yellow' : ''">Filme</span>
+            <span [ngClass]="rlaFilme.isActive ? 'border-b border-sw-dark-blue dark:border-sw-yellow' : ''">Filme</span>
           </a>
           <a
-            routerLink="/charaktere"
-            routerLinkActive="text-sw-black dark:text-sw-yellow font-bold"
+            routerLink="/people"
+            routerLinkActive="text-sw-dark-blue dark:text-sw-yellow font-bold"
             #rlaCharaktere="routerLinkActive"
-            class="text-sw-black dark:text-sw-white hover:text-gray-600 dark:hover:text-sw-yellow transition-colors duration-200 py-2 text-[14px] leading-[17px] font-normal"
+            class="text-sw-dark-blue dark:text-gray-100 hover:text-gray-600 dark:hover:text-sw-yellow transition-colors duration-200 py-2 text-[14px] leading-[17px] font-normal"
           >
-            <span [ngClass]="rlaCharaktere.isActive ? 'border-b border-sw-black dark:border-sw-yellow' : ''">Charaktere</span>
+            <span [ngClass]="rlaCharaktere.isActive ? 'border-b border-sw-dark-blue dark:border-sw-yellow' : ''">Charaktere</span>
           </a>
           <a
-            routerLink="/planeten"
-            routerLinkActive="text-sw-black dark:text-sw-yellow font-bold"
+            routerLink="/planets"
+            routerLinkActive="text-sw-dark-blue dark:text-sw-yellow font-bold"
             #rlaPlaneten="routerLinkActive"
-            class="text-sw-black dark:text-sw-white hover:text-gray-600 dark:hover:text-sw-yellow transition-colors duration-200 py-2 text-[14px] leading-[17px] font-normal"
+            class="text-sw-dark-blue dark:text-gray-100 hover:text-gray-600 dark:hover:text-sw-yellow transition-colors duration-200 py-2 text-[14px] leading-[17px] font-normal"
           >
-            <span [ngClass]="rlaPlaneten.isActive ? 'border-b border-sw-black dark:border-sw-yellow' : ''">Planeten</span>
+            <span [ngClass]="rlaPlaneten.isActive ? 'border-b border-sw-dark-blue dark:border-sw-yellow' : ''">Planeten</span>
           </a>
         </nav>
       </div>
@@ -63,11 +63,11 @@
             [(ngModel)]="searchQuery"
             name="search"
             placeholder="Suche"
-            class="bg-sw-white dark:bg-gray-800 text-sw-black dark:text-sw-white rounded-[2px] dark:rounded-full px-4 py-2 pr-10 border border-sw-gray dark:border-none focus:outline-none focus:ring-1 focus:ring-sw-black focus:border-sw-black dark:focus:ring-2 dark:focus:ring-sw-yellow min-w-[220px] dark:w-64 min-h-[50px] placeholder:text-sw-gray dark:placeholder:text-gray-400 placeholder:text-[16px] placeholder:leading-[22px] placeholder:font-normal placeholder:font-roboto transition-all duration-300 hover:border-sw-black dark:hover:border-none"
+            class="bg-sw-white dark:bg-gray-800 text-sw-dark-blue dark:text-gray-100 rounded-[2px] dark:rounded-full px-4 py-2 pr-10 border border-sw-silver dark:border-none focus:outline-none focus:ring-1 focus:ring-sw-dark-blue focus:border-sw-dark-blue dark:focus:ring-2 dark:focus:ring-sw-yellow min-w-[220px] dark:w-64 min-h-[50px] placeholder:text-sw-silver dark:placeholder:text-gray-400 placeholder:text-[16px] placeholder:leading-[22px] placeholder:font-normal placeholder:font-roboto transition-all duration-300 hover:border-sw-dark-blue dark:hover:border-none"
           />
           <button
             type="submit"
-            class="absolute right-3 top-1/2 transform -translate-y-1/2 text-sw-gray dark:text-gray-400 hover:text-sw-black dark:hover:text-sw-yellow transition-colors duration-200"
+            class="absolute right-3 top-1/2 transform -translate-y-1/2 text-sw-silver dark:text-gray-400 hover:text-sw-dark-blue dark:hover:text-sw-yellow transition-colors duration-200"
           >
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -78,7 +78,7 @@
         <!-- Theme Toggle Button -->
         <button
           (click)="toggleTheme()"
-          class="p-2 rounded-full text-sw-black dark:text-sw-yellow hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-400 dark:focus:ring-sw-yellow"
+          class="p-2 rounded-full text-sw-dark-blue dark:text-sw-yellow hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-400 dark:focus:ring-sw-yellow"
           [attr.aria-label]="isDark() ? 'Switch to light mode' : 'Switch to dark mode'"
         >
           <!-- Sun Icon -->
@@ -97,7 +97,7 @@
         <!-- Theme Toggle (Mobile) -->
         <button
           (click)="toggleTheme()"
-          class="text-sw-black dark:text-sw-white focus:outline-none"
+          class="text-sw-dark-blue dark:text-gray-100 focus:outline-none"
         >
              <svg *ngIf="isDark()" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
@@ -109,7 +109,7 @@
 
         <button
           (click)="toggleMobileMenu()"
-          class="text-sw-black dark:text-sw-white focus:outline-none"
+          class="text-sw-dark-blue dark:text-gray-100 focus:outline-none"
           aria-label="Toggle menu"
         >
           <svg
@@ -139,34 +139,34 @@
     <!-- Mobile Menu -->
     <div
       *ngIf="isMobileMenuOpen"
-      class="md:hidden pb-4 animate-slide-down bg-sw-white dark:bg-sw-black shadow-lg absolute top-[var(--app-header-height)] left-0 w-full px-4 border-t border-gray-100 dark:border-gray-800"
+      class="md:hidden pb-4 animate-slide-down bg-sw-white dark:bg-sw-dark-blue shadow-lg absolute top-[var(--app-header-height)] left-0 w-full px-4 border-t border-gray-100 dark:border-gray-800"
     >
       <!-- Mobile Navigation -->
       <nav class="flex flex-col space-y-4 mb-4 pt-4">
         <a
-          routerLink="/filme"
-          routerLinkActive="text-sw-black dark:text-sw-yellow font-bold"
+          routerLink="/films"
+          routerLinkActive="text-sw-dark-blue dark:text-sw-yellow font-bold"
           #rlaMobileFilme="routerLinkActive"
           (click)="closeMobileMenu()"
-          class="text-sw-black dark:text-sw-white hover:text-gray-600 dark:hover:text-sw-yellow transition-colors duration-200 text-[14px] leading-[17px] font-normal border-b border-sw-gray/20 dark:border-gray-700 pb-2"
+          class="text-sw-dark-blue dark:text-gray-100 hover:text-gray-600 dark:hover:text-sw-yellow transition-colors duration-200 text-[14px] leading-[17px] font-normal border-b border-sw-silver/20 dark:border-gray-700 pb-2"
         >
           <span>Filme</span>
         </a>
         <a
-          routerLink="/charaktere"
-          routerLinkActive="text-sw-black dark:text-sw-yellow font-bold"
+          routerLink="/people"
+          routerLinkActive="text-sw-dark-blue dark:text-sw-yellow font-bold"
           #rlaMobileCharaktere="routerLinkActive"
           (click)="closeMobileMenu()"
-          class="text-sw-black dark:text-sw-white hover:text-gray-600 dark:hover:text-sw-yellow transition-colors duration-200 text-[14px] leading-[17px] font-normal border-b border-sw-gray/20 dark:border-gray-700 pb-2"
+          class="text-sw-dark-blue dark:text-gray-100 hover:text-gray-600 dark:hover:text-sw-yellow transition-colors duration-200 text-[14px] leading-[17px] font-normal border-b border-sw-silver/20 dark:border-gray-700 pb-2"
         >
           <span>Charaktere</span>
         </a>
         <a
-          routerLink="/planeten"
-          routerLinkActive="text-sw-black dark:text-sw-yellow font-bold"
+          routerLink="/planets"
+          routerLinkActive="text-sw-dark-blue dark:text-sw-yellow font-bold"
           #rlaMobilePlaneten="routerLinkActive"
           (click)="closeMobileMenu()"
-          class="text-sw-black dark:text-sw-white hover:text-gray-600 dark:hover:text-sw-yellow transition-colors duration-200 text-[14px] leading-[17px] font-normal border-b border-sw-gray/20 dark:border-gray-700 pb-2"
+          class="text-sw-dark-blue dark:text-gray-100 hover:text-gray-600 dark:hover:text-sw-yellow transition-colors duration-200 text-[14px] leading-[17px] font-normal border-b border-sw-silver/20 dark:border-gray-700 pb-2"
         >
           <span>Planeten</span>
         </a>
@@ -179,11 +179,11 @@
           [(ngModel)]="searchQuery"
           name="search"
           placeholder="Suche"
-          class="bg-sw-white dark:bg-gray-800 text-sw-black dark:text-sw-white rounded-[2px] dark:rounded-full px-4 py-2 pr-10 border border-sw-gray dark:border-none focus:outline-none focus:ring-1 focus:ring-sw-black focus:border-sw-black dark:focus:ring-2 dark:focus:ring-sw-yellow w-full min-h-[50px] placeholder:text-sw-gray dark:placeholder:text-gray-400 placeholder:text-[16px] placeholder:leading-[22px] placeholder:font-normal placeholder:font-roboto transition-all duration-300 hover:border-sw-black dark:hover:border-none"
+          class="bg-sw-white dark:bg-gray-800 text-sw-dark-blue dark:text-gray-100 rounded-[2px] dark:rounded-full px-4 py-2 pr-10 border border-sw-silver dark:border-none focus:outline-none focus:ring-1 focus:ring-sw-dark-blue focus:border-sw-dark-blue dark:focus:ring-2 dark:focus:ring-sw-yellow w-full min-h-[50px] placeholder:text-sw-silver dark:placeholder:text-gray-400 placeholder:text-[16px] placeholder:leading-[22px] placeholder:font-normal placeholder:font-roboto transition-all duration-300 hover:border-sw-dark-blue dark:hover:border-none"
         />
         <button
           type="submit"
-          class="absolute right-3 top-1/2 transform -translate-y-1/2 -mt-1 text-sw-gray dark:text-gray-400 hover:text-sw-black dark:hover:text-sw-yellow transition-colors duration-200"
+          class="absolute right-3 top-1/2 transform -translate-y-1/2 -mt-1 text-sw-silver dark:text-gray-400 hover:text-sw-dark-blue dark:hover:text-sw-yellow transition-colors duration-200"
         >
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />

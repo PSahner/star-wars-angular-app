@@ -1,0 +1,21 @@
+<div
+  *ngIf="open"
+  class="fixed inset-0 z-[100] flex items-center justify-center px-4 py-8"
+  role="dialog"
+  aria-modal="true"
+  [attr.aria-label]="ariaLabel"
+>
+  <button
+    type="button"
+    class="absolute inset-0 bg-sw-dark-blue/40 dark:bg-sw-dark-blue/60 backdrop-blur-md"
+    aria-label="Dialog schließen"
+    (click)="onBackdropClick()"
+  ></button>
+
+  <div
+    data-tooltip-boundary
+    class="relative w-full max-w-[600px] bg-sw-white dark:bg-gray-900 shadow-[2px_6px_12px_#00000059] rounded-none dark:rounded-lg px-[60px] pt-[55px] pb-[60px] max-h-[calc(100vh-4rem)] overflow-y-auto"
+  >
+    <ng-content></ng-content>
+  </div>
+</div>

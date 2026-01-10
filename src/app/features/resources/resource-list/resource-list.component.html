@@ -1,0 +1,97 @@
+<app-page-container classNames="font-roboto tracking-normal bg-sw-white dark:bg-gray-800 text-sw-dark-blue dark:text-gray-100">
+
+  <div class="flex flex-col-reverse relative">
+    <h1 class="font-bold font-semibold text-[75px] leading-[90px] dark:text-[58px] leading-[70px] text-center dark:text-left mt-[50px] dark:mt-[139px] mb-[139px] dark:bg-sw-dark-blue dark:p-6 dark:rounded-lg dark:z-0">
+      {{ listTitle }}
+    </h1>
+    <div *ngIf="!isLoading && !errorMessage" class="flex justify-end mt-[32px] dark:mt-0 dark:absolute dark:top-[50%] dark:translate-y-[-50%] dark:right-6 dark:z-10">
+      <button
+        type="button"
+        class="bg-sw-dark-blue dark:bg-sw-brandy rounded-[2px] dark:rounded-lg font-medium text-[14px] leading-[17px] text-gray-100 px-[38px] py-[21px] hover:text-sw-yellow dark:hover:text-sw-yellow focus:outline-none focus:ring-2 focus:ring-sw-dark-blue dark:focus:ring-sw-yellow"
+        (click)="openAddModal()"
+      >
+        Hinzufügen
+      </button>
+    </div>
+  </div>
+
+  <app-loading-state *ngIf="isLoading" [message]="definition?.list?.loadingMessage ?? 'Loading...'">
+  </app-loading-state>
+
+  <app-error-state
+    *ngIf="!isLoading && errorMessage"
+    [message]="errorMessage"
+    (retry)="retry()"
+  ></app-error-state>
+
+  <app-resource-add-modal
+    [open]="isAddModalOpen"
+    [resourceKey]="resourceKey"
+    (closed)="closeAddModal()"
+  ></app-resource-add-modal>
+
+  <div *ngIf="!isLoading && !errorMessage && items.length > 0">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-[53px] gap-y-[56px]">
+      <a
+        *ngFor="let item of items"
+        [routerLink]="buildDetailLink(item)"
+        class="group bg-sw-silver/[0.24] dark:bg-sw-dark-blue rounded-none dark:rounded-lg shadow-none hover:shadow-lg dark:border dark:border-sw-dark-blue overflow-hidden transition-all duration-300 flex flex-col h-full cursor-pointer"
+      >
+        <div class="relative w-full aspect-[16/13] overflow-hidden">
+          <img
+            [src]="item.imageUrl"
+            [alt]="cardTitle(item)"
+            (error)="onImageError($event)"
+            class="w-full h-full object-cover"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-sw-dark-blue/60 to-transparent opacity-100 group-hover:opacity-0 transition-opacity duration-300"></div>
+        </div>
+
+        <div class="p-[24px] flex-grow flex flex-col">
+          <h3 class="font-bold text-[25px] leading-[30px] dark:text-gray-200 mb-3">{{ cardTitle(item) }}</h3>
+
+          <div class="space-y-0 dark:space-y-2 font-normal text-[14px] leading-[17px] dark:text-gray-200 mb-4 flex-grow">
+            <div *ngFor="let field of displayFields" class="flex items-center">
+              <span class="font-semibold dark:w-32 mr-[3px]">{{ field.label }}:</span>
+              <span>{{ field.value(item) }}</span>
+            </div>
+          </div>
+
+          <span class="inline-block font-bold text-[12px] leading-[14px] dark:text-sw-yellow group-hover:underline transition-colors duration-200">
+            Mehr Informationen...
+          </span>
+        </div>
+      </a>
+    </div>
+
+    <div class="my-[144px]">
+      <div *ngIf="totalPages > 1" class="flex justify-center items-center space-x-8">
+        <button
+          type="button"
+          (click)="loadPreviousPage()"
+          [disabled]="!hasPreviousPage"
+          class="bg-sw-dark-blue dark:bg-sw-dark-blue rounded-[2px] dark:rounded-lg font-medium text-[14px] leading-[17px] text-gray-100 px-[38px] py-[21px] hover:text-sw-yellow dark:hover:text-sw-yellow focus:outline-none focus:ring-2 focus:ring-sw-dark-blue dark:focus:ring-sw-yellow disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:bg-sw-dark-blue dark:disabled:hover:bg-sw-dark-blue"
+        >
+          ← Zurück
+        </button>
+
+        <span class="dark:text-gray-300 font-medium">{{ currentPage }} | {{ totalPages }}</span>
+
+        <button
+          type="button"
+          (click)="loadNextPage()"
+          [disabled]="!hasNextPage"
+          class="bg-sw-dark-blue dark:bg-sw-dark-blue rounded-[2px] dark:rounded-lg font-medium text-[14px] leading-[17px] text-gray-100 px-[38px] py-[21px] hover:text-sw-yellow dark:hover:text-sw-yellow focus:outline-none focus:ring-2 focus:ring-sw-dark-blue dark:focus:ring-sw-yellow disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:bg-sw-dark-blue dark:disabled:hover:bg-sw-dark-blue"
+        >
+          Weiter →
+        </button>
+      </div>
+
+      <p class="text-center mt-6 dark:text-gray-400">Gesamt: {{ totalCount }}</p>
+    </div>
+  </div>
+
+  <div *ngIf="!isLoading && !errorMessage && items.length === 0" class="my-[144px] text-center py-12">
+    <p class="dark:text-gray-400 text-lg">{{ emptyMessage }}</p>
+  </div>
+</app-page-container>

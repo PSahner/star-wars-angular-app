@@ -25,10 +25,11 @@ A modern, production-ready Angular 18 application for exploring the Star Wars un
 ## ✨ Features
 
 ### Implemented Features ✅
-- **Characters (Charaktere):** List and detail views (read-only)
-  - Grid view with character cards
-  - Detailed character view with related data
-  - Client-side pagination support
+- **Generic Resources (registry-driven):** List and detail views (read-only)
+  - Supported resources: **People**, **Films**, **Planets**
+  - Single generic list/detail implementation driven by a central **Resource Registry**
+  - Grid view with cards, deterministic placeholder images, and client-side pagination
+  - Detail view with related data sections (clickable related items)
   - Loading states and error handling (reusable shared components)
 - **Services Layer:** Full service architecture
   - Base `SwapiService` with HTTP client, caching, retry logic
@@ -47,10 +48,7 @@ A modern, production-ready Angular 18 application for exploring the Star Wars un
 - **CI/CD:** GitHub Actions (reusable workflow for lint/test/build, optional Codecov upload)
 
 ### To Be Implemented 🚧
-- **Films (Filme):** List and detail views
-- **Planets (Planeten):** List and detail views
-- **Starships (Optional):** List and detail views
-- **Frontpage (Startseite):** Simple landing page (logo-only)
+- **Starships (Optional UI):** List and detail views (services exist; UI is not wired yet)
 - **Search Functionality:** Global search across resources
 - **Modal Forms:** UI-only "Add" forms (as per requirements)
 
@@ -102,16 +100,12 @@ star-wars-angular-app/
 │   │   │       ├── films.service.ts
 │   │   │       ├── starships.service.ts
 │   │   │       └── planets.service.ts
-│   │   ├── features/           # Feature modules
-│   │   │   └── people/         # People feature (REFERENCE)
-│   │   │       ├── people-list/
-│   │   │       │   ├── people-list.component.ts
-│   │   │       │   ├── people-list.component.html
-│   │   │       │   └── people-list.component.spec.ts
-│   │   │       └── people-detail/
-│   │   │           ├── people-detail.component.ts
-│   │   │           ├── people-detail.component.html
-│   │   │           └── people-detail.component.spec.ts
+│   │   ├── features/           # Feature pages
+│   │   │   ├── frontpage/      # Landing page
+│   │   │   └── resources/      # Generic registry-driven resource pages
+│   │   │       ├── resource-registry.ts
+│   │   │       ├── resource-list/
+│   │   │       └── resource-detail/
 │   │   ├── shared/             # Shared components
 │   │   │   ├── components/      # Reusable UI components (header, footer, loading/error state, ...)
 │   │   │   ├── directives/      # Reusable directives (e.g. appDragScroll)
@@ -137,7 +131,7 @@ star-wars-angular-app/
 ## 🚀 Getting Started
 
 ### Prerequisites
-- **Node.js:** 18.x or 20.x
+- **Node.js:** (18.x or) 20.x
 - **npm:** 9.x or higher
 - **Git:** Latest version
 
@@ -183,12 +177,11 @@ star-wars-angular-app/
 
 1. **Create a new feature:**
    ```bash
-   # Create component
-   cd src/app/features
-   mkdir -p films/films-list
-   
-   # Use People components as reference
-   # See IMPLEMENTATION_GUIDE.md for details
+   # For new SWAPI resources, add a new entry to the registry:
+   # src/app/features/resources/resource-registry.ts
+   #
+   # Then add routes in:
+   # src/app/app.routes.ts
    ```
 
 2. **Run tests:**
@@ -358,8 +351,8 @@ The SWAPI Reborn API is **read-only** (GET requests). List endpoints return **pl
 ### Development Guide
 
 See [docs/IMPLEMENTATION_GUIDE.md](./docs/IMPLEMENTATION_GUIDE.md) for detailed instructions on:
-- Implementing Films feature
-- Implementing Planets feature
+- How the Resource Registry works
+- How to add additional resources (optional)
 - Code patterns and best practices
 - Testing guidelines
 
@@ -397,9 +390,9 @@ See [docs/IMPLEMENTATION_GUIDE.md](./docs/IMPLEMENTATION_GUIDE.md) for detailed 
 - [x] **AC-9:** Git version control
 
 ### In Progress 🚧
-- [ ] **AC-3:** Master-detail for Films and Planets
+- [x] **AC-3:** Master-detail for Films and Planets
 - [ ] **AC-5:** UI-only input forms
-- [ ] **AC-6:** Three root resources (need Films + Planets)
+- [x] **AC-6:** Three root resources (People + Films + Planets)
 
 ### Technical Requirements ✅
 - [x] **TA-1:** Angular 18 (latest stable)
@@ -430,31 +423,6 @@ For questions or issues:
 1. Check [docs/IMPLEMENTATION_GUIDE.md](./docs/IMPLEMENTATION_GUIDE.md)
 2. Review existing issues on GitHub
 3. Create a new issue with detailed description
-
----
-
-## 🗺️ Roadmap
-
-### Phase 1: Core Features (Current)
-- [x] Project setup
-- [x] Service layer
-- [x] People feature
-- [ ] Films feature
-- [ ] Planets feature
-
-### Phase 2: Enhancements
-- [ ] Search functionality
-- [ ] Starships feature
-- [ ] Modal forms (UI-only)
-- [ ] Advanced filtering
-- [ ] Favorites system
-
-### Phase 3: Polish
-- [ ] Loading skeletons
-- [ ] Animations
-- [ ] Dark mode
-- [ ] Accessibility improvements
-- [ ] Performance optimization
 
 ---
 

@@ -31,9 +31,14 @@ module.exports = {
       },
       colors: {
         'sw-yellow': '#FFE81F',
-        'sw-black': '#10172C',
-        'sw-gray': '#BBBBBB',
-        'sw-gray-hover': '#A0A0A0',
+        'sw-dark-blue': '#10172C',
+        'sw-navy-blue': '#00305A',
+        'sw-silver': '#BBBBBB',
+        'sw-silver-hover': '#A0A0A0',
+        'sw-platinum': '#EFEFEF',
+        'sw-platinum-hover': '#DADADA',
+        'sw-granite': '#8C8A93',
+        'sw-brandy': '#822717',
         'sw-white': '#FFFFFF'
       },
       fontFamily: {

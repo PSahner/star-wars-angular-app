@@ -30,6 +30,21 @@ export class DragScrollDirective {
     return this.isDragging ? 'none' : '';
   }
 
+  @HostBinding('style.scrollBehavior')
+  get scrollBehavior(): string {
+    return this.isDragging ? 'auto' : '';
+  }
+
+  @HostBinding('style.scrollSnapType')
+  get scrollSnapType(): string {
+    return this.isDragging ? 'none' : '';
+  }
+
+  @HostListener('dragstart', ['$event'])
+  onDragStart(event: DragEvent): void {
+    event.preventDefault();
+  }
+
   @HostListener('pointerdown', ['$event'])
   onPointerDown(event: PointerEvent): void {
     if (!this.appDragScrollEnabled) return;
@@ -49,7 +64,6 @@ export class DragScrollDirective {
   @HostListener('pointermove', ['$event'])
   onPointerMove(event: PointerEvent): void {
     if (!this.isDragging) return;
-    if (event.pointerType !== 'mouse') return;
 
     const el = this.elRef.nativeElement;
 
@@ -67,7 +81,6 @@ export class DragScrollDirective {
 
   @HostListener('pointerup', ['$event'])
   onPointerUp(event: PointerEvent): void {
-    if (event.pointerType !== 'mouse') return;
     if (!this.isDragging) return;
 
     const el = this.elRef.nativeElement;
@@ -82,7 +95,6 @@ export class DragScrollDirective {
 
   @HostListener('pointercancel', ['$event'])
   onPointerCancel(event: PointerEvent): void {
-    if (event.pointerType !== 'mouse') return;
     if (!this.isDragging) return;
 
     const el = this.elRef.nativeElement;

@@ -1,0 +1,39 @@
+<app-modal
+  [open]="open"
+  [ariaLabel]="title()"
+  (closed)="close()"
+>
+  <div class="flex flex-col">
+    <h2 class="font-roboto font-bold text-center text-[25px] leading-[30px] text-sw-dark-blue dark:text-gray-100">
+      {{ title() }}
+    </h2>
+
+    <div class="mt-8">
+      <app-dynamic-form [fields]="fields()" (valueChange)="onValueChange($event)"></app-dynamic-form>
+    </div>
+
+    <div class="mt-[52px] flex justify-end gap-x-[20px]">
+      <button
+        type="button"
+        class="bg-gray-100 dark:bg-gray-700 rounded-[2px] dark:rounded-lg font-roboto font-medium text-[14px] leading-[17px] tracking-normal text-sw-navy-blue dark:text-gray-100 px-[38px] py-[21px] hover:bg-gray-200 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-sw-dark-blue dark:focus:ring-sw-yellow disabled:opacity-60"
+        (click)="close()"
+        [disabled]="isSaving"
+      >
+        Abbrechen
+      </button>
+
+      <button
+        type="button"
+        class="bg-sw-dark-blue dark:bg-sw-dark-blue rounded-[2px] dark:rounded-lg font-roboto font-medium text-[14px] leading-[17px] tracking-normal text-gray-100 px-[38px] py-[21px] hover:bg-gray-900 dark:hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-sw-dark-blue dark:focus:ring-sw-yellow disabled:opacity-60 disabled:cursor-not-allowed"
+        (click)="submit()"
+        [disabled]="isSaving"
+      >
+        <span *ngIf="!isSaving">Speichern</span>
+        <span *ngIf="isSaving" class="inline-flex items-center gap-3">
+          <span class="inline-block animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-sw-yellow"></span>
+          <span>Speichern...</span>
+        </span>
+      </button>
+    </div>
+  </div>
+</app-modal>

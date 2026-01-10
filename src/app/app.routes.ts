@@ -1,67 +1,63 @@
 import { Routes } from '@angular/router';
-import { PeopleListComponent } from './features/people/people-list/people-list.component';
-import { PeopleDetailComponent } from './features/people/people-detail/people-detail.component';
 import { FrontpageComponent } from './features/frontpage/frontpage.component';
+import { ResourceListComponent } from './features/resources/resource-list/resource-list.component';
+import { ResourceDetailComponent } from './features/resources/resource-detail/resource-detail.component';
 
 /**
  * Application routing configuration
  *
  * Routes:
- * - '' (root) -> redirects to /charaktere
- * - '/charaktere' -> People list view
- * - '/charaktere/:id' -> People detail view
- * - '/filme' -> Films list view (to be implemented)
- * - '/filme/:id' -> Films detail view (to be implemented)
- * - '/planeten' -> Planets list view (to be implemented)
- * - '/planeten/:id' -> Planets detail view (to be implemented)
- *
- * Note: Film and Planet routes are placeholders for user implementation
+ * - '' (root) -> frontpage
+ * - '/people' -> People list view
+ * - '/people/:id' -> People detail view
+ * - '/films' -> Films list view
+ * - '/films/:id' -> Films detail view
+ * - '/planets' -> Planets list view
+ * - '/planets/:id' -> Planets detail view
+ * - '**' -> redirects to '/'
  */
 export const routes: Routes = [
-  // Root / Frontpage
   {
     path: '',
     component: FrontpageComponent,
     title: 'Star Wars'
   },
-
-  // People/Characters routes (COMPLETE REFERENCE IMPLEMENTATION)
   {
-    path: 'charaktere',
-    component: PeopleListComponent,
-    title: 'Charaktere | Star Wars'
+    path: 'people',
+    component: ResourceListComponent,
+    data: { resourceKey: 'people' },
+    title: 'People | Star Wars'
   },
   {
-    path: 'charaktere/:id',
-    component: PeopleDetailComponent,
-    title: 'Charakter Details | Star Wars'
+    path: 'people/:id',
+    component: ResourceDetailComponent,
+    data: { resourceKey: 'people' },
+    title: 'People Details | Star Wars'
   },
-
-  // Films routes (TO BE IMPLEMENTED BY USER)
-  // {
-  //   path: 'filme',
-  //   component: FilmsListComponent,
-  //   title: 'Filme | Star Wars'
-  // },
-  // {
-  //   path: 'filme/:id',
-  //   component: FilmsDetailComponent,
-  //   title: 'Film Details | Star Wars'
-  // },
-
-  // Planets routes (TO BE IMPLEMENTED BY USER)
-  // {
-  //   path: 'planeten',
-  //   component: PlanetsListComponent,
-  //   title: 'Planeten | Star Wars'
-  // },
-  // {
-  //   path: 'planeten/:id',
-  //   component: PlanetsDetailComponent,
-  //   title: 'Planet Details | Star Wars'
-  // },
-
-  // Wildcard route - redirect to home
+  {
+    path: 'films',
+    component: ResourceListComponent,
+    data: { resourceKey: 'films' },
+    title: 'Films | Star Wars'
+  },
+  {
+    path: 'films/:id',
+    component: ResourceDetailComponent,
+    data: { resourceKey: 'films' },
+    title: 'Film Details | Star Wars'
+  },
+  {
+    path: 'planets',
+    component: ResourceListComponent,
+    data: { resourceKey: 'planets' },
+    title: 'Planets | Star Wars'
+  },
+  {
+    path: 'planets/:id',
+    component: ResourceDetailComponent,
+    data: { resourceKey: 'planets' },
+    title: 'Planet Details | Star Wars'
+  },
   {
     path: '**',
     redirectTo: '/'
