@@ -35,34 +35,36 @@ export interface ImageDefinition<T> {
 /**
  * Definition for a related content block that loads a single related resource.
  */
-export interface RelatedSingleBlock<TMain> {
+export interface RelatedSingleBlock<TMain, TRelated> {
   kind: 'single';
   title: string;
   getUrl: (main: TMain) => string | null;
-  load: (url: string) => Observable<unknown>;
-  link: (item: unknown) => RouterLinkCommands;
-  label: (item: unknown) => string;
+  load: (url: string) => Observable<TRelated>;
+  link: (item: TRelated) => RouterLinkCommands;
+  label: (item: TRelated) => string;
 }
 
 /**
  * Definition for a related content block that loads a list of related resources.
  */
-export interface RelatedListBlock<TMain> {
+export interface RelatedListBlock<TMain, TRelated> {
   kind: 'list';
   title: string;
   getUrls: (main: TMain) => string[];
-  load: (urls: string[]) => Observable<unknown[]>;
-  link: (item: unknown) => RouterLinkCommands;
-  label: (item: unknown) => string;
-  subtitle?: (item: unknown) => string;
-  image?: ImageDefinition<unknown>;
+  load: (urls: string[]) => Observable<TRelated[]>;
+  link: (item: TRelated) => RouterLinkCommands;
+  label: (item: TRelated) => string;
+  subtitle?: (item: TRelated) => string;
+  image?: ImageDefinition<TRelated>;
   limit?: number;
 }
 
 /**
  * Union of the supported related block kinds.
  */
-export type RelatedBlock<TMain> = RelatedSingleBlock<TMain> | RelatedListBlock<TMain>;
+export type RelatedBlock<TMain, TRelated = unknown> =
+  | RelatedSingleBlock<TMain, TRelated>
+  | RelatedListBlock<TMain, TRelated>;
 
 /**
  * Configuration contract for resources.
@@ -105,7 +107,8 @@ export interface ResourceDefinition<TList, TDetail> {
     subtitle?: (item: TDetail) => string;
     image: ImageDefinition<TDetail>;
     fields: UiField<TDetail>[];
-    related: Array<RelatedBlock<TDetail>>;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    related: ReadonlyArray<RelatedBlock<TDetail, any>>;
   };
 }
 
@@ -228,27 +231,27 @@ export class ResourceRegistryService {
             getUrl: (p) => p.homeworld || null,
             load: (url) => this.peopleService.getHomeworld(url),
             link: (planet) => {
-              const id = extractIdFromUrl((planet as Planet).url);
+              const id = extractIdFromUrl(planet.url);
               return id === null ? ['/', 'planets'] : ['/', 'planets', id];
             },
-            label: (planet) => (planet as Planet).name
-          },
+            label: (planet) => planet.name
+          } as RelatedSingleBlock<PersonWithId, Planet>,
           {
             kind: 'list',
             title: 'Filme',
             getUrls: (p) => p.films,
             load: (urls) => this.peopleService.getFilms(urls),
             link: (film) => {
-              const id = extractIdFromUrl((film as Film).url);
+              const id = extractIdFromUrl(film.url);
               return id === null ? ['/', 'films'] : ['/', 'films', id];
             },
-            label: (film) => (film as Film).title,
-            subtitle: (film) => `Episode ${(film as Film).episode_id}`,
+            label: (film) => film.title,
+            subtitle: (film) => `Episode ${film.episode_id}`,
             image: {
-              seed: (film) => seedFromUrl('film', (film as Film).url, (film as Film).title),
+              seed: (film) => seedFromUrl('film', film.url, film.title),
               size: { width: 512, height: 256 }
             }
-          }
+          } as RelatedListBlock<PersonWithId, Film>
         ]
       }
     };
@@ -307,30 +310,30 @@ export class ResourceRegistryService {
             getUrls: (f) => f.characters,
             load: (urls) => this.filmsService.getCharacters(urls),
             link: (person) => {
-              const id = extractIdFromUrl((person as Person).url);
+              const id = extractIdFromUrl(person.url);
               return id === null ? ['/', 'people'] : ['/', 'people', id];
             },
-            label: (person) => (person as Person).name,
+            label: (person) => person.name,
             image: {
-              seed: (person) => seedFromUrl('person', (person as Person).url, (person as Person).name),
+              seed: (person) => seedFromUrl('person', person.url, person.name),
               size: { width: 512, height: 256 }
             }
-          },
+          } as RelatedListBlock<FilmWithId, Person>,
           {
             kind: 'list',
             title: 'Planete',
             getUrls: (f) => f.planets,
             load: (urls) => this.filmsService.getPlanets(urls),
             link: (planet) => {
-              const id = extractIdFromUrl((planet as Planet).url);
+              const id = extractIdFromUrl(planet.url);
               return id === null ? ['/', 'planets'] : ['/', 'planets', id];
             },
-            label: (planet) => (planet as Planet).name,
+            label: (planet) => planet.name,
             image: {
-              seed: (planet) => seedFromUrl('planet', (planet as Planet).url, (planet as Planet).name),
+              seed: (planet) => seedFromUrl('planet', planet.url, planet.name),
               size: { width: 512, height: 256 }
             }
-          }
+          } as RelatedListBlock<FilmWithId, Planet>
         ]
       }
     };
@@ -392,31 +395,31 @@ export class ResourceRegistryService {
             getUrls: (p) => p.residents,
             load: (urls) => this.planetsService.getResidents(urls),
             link: (person) => {
-              const id = extractIdFromUrl((person as Person).url);
+              const id = extractIdFromUrl(person.url);
               return id === null ? ['/', 'people'] : ['/', 'people', id];
             },
-            label: (person) => (person as Person).name,
+            label: (person) => person.name,
             image: {
-              seed: (person) => seedFromUrl('person', (person as Person).url, (person as Person).name),
+              seed: (person) => seedFromUrl('person', person.url, person.name),
               size: { width: 512, height: 256 }
             }
-          },
+          } as RelatedListBlock<PlanetWithId, Person>,
           {
             kind: 'list',
             title: 'Filme',
             getUrls: (p) => p.films,
             load: (urls) => this.planetsService.getFilms(urls),
             link: (film) => {
-              const id = extractIdFromUrl((film as Film).url);
+              const id = extractIdFromUrl(film.url);
               return id === null ? ['/', 'films'] : ['/', 'films', id];
             },
-            label: (film) => (film as Film).title,
-            subtitle: (film) => `Episode ${(film as Film).episode_id}`,
+            label: (film) => film.title,
+            subtitle: (film) => `Episode ${film.episode_id}`,
             image: {
-              seed: (film) => seedFromUrl('film', (film as Film).url, (film as Film).title),
+              seed: (film) => seedFromUrl('film', film.url, film.title),
               size: { width: 512, height: 256 }
             }
-          }
+          } as RelatedListBlock<PlanetWithId, Film>
         ]
       }
     };

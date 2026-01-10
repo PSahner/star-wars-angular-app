@@ -25,7 +25,7 @@ import {
 type AnyDetailItem = Record<string, unknown>;
 
 type RelatedResolved = {
-  block: RelatedBlock<AnyDetailItem>;
+  block: RelatedBlock<AnyDetailItem, unknown>;
   single: unknown | null;
   list: unknown[];
 };
@@ -180,9 +180,9 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
    * @param relatedItem Related item to create an image URL for
    * @returns Image URL (or empty string if not configured)
    */
-  getRelatedImageUrl(block: RelatedBlock<AnyDetailItem>, relatedItem: unknown): string {
+  getRelatedImageUrl(block: RelatedBlock<AnyDetailItem, unknown>, relatedItem: unknown): string {
     if (block.kind !== 'list') return '';
-    const listBlock = block as RelatedListBlock<AnyDetailItem>;
+    const listBlock = block as RelatedListBlock<AnyDetailItem, unknown>;
     const imgDef = listBlock.image as ImageDefinition<unknown> | undefined;
     if (!imgDef) return '';
     return this.picsumImageService.getSeededImageUrl(imgDef.seed(relatedItem), imgDef.size);
@@ -227,7 +227,7 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
           imageUrl: this.picsumImageService.getSeededImageUrl(imgDef.seed(base), imgDef.size)
         };
 
-        const blocks = (def.detail.related ?? []) as Array<RelatedBlock<AnyDetailItem>>;
+        const blocks = (def.detail.related ?? []) as Array<RelatedBlock<AnyDetailItem, unknown>>;
         if (!this.item || blocks.length === 0) {
           this.isLoading = false;
           return of(null);
@@ -235,7 +235,7 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
 
         const tasks = blocks.map((block) => {
           if (block.kind === 'single') {
-            const b = block as RelatedSingleBlock<AnyDetailItem>;
+            const b = block as RelatedSingleBlock<AnyDetailItem, unknown>;
             const url = b.getUrl(this.item as AnyDetailItem);
             if (!url) {
               return of({ block, single: null, list: [] } satisfies RelatedResolved);
@@ -250,7 +250,7 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
             );
           }
 
-          const b = block as RelatedListBlock<AnyDetailItem>;
+          const b = block as RelatedListBlock<AnyDetailItem, unknown>;
           const urls = b.getUrls(this.item as AnyDetailItem);
           const limitedUrls = typeof b.limit === 'number' ? urls.slice(0, b.limit) : urls;
 
