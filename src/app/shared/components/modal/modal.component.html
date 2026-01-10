@@ -1,5 +1,4 @@
-<div
-  *ngIf="open"
+<div *ngIf="open"
   class="fixed inset-0 z-[100] flex items-center justify-center px-4 py-8"
   role="dialog"
   aria-modal="true"
@@ -12,10 +11,7 @@
     (click)="onBackdropClick()"
   ></button>
 
-  <div
-    data-tooltip-boundary
-    class="relative w-full max-w-[600px] bg-sw-white dark:bg-gray-900 shadow-[2px_6px_12px_#00000059] rounded-none dark:rounded-lg px-[60px] pt-[55px] pb-[60px] max-h-[calc(100vh-4rem)] overflow-y-auto"
-  >
+  <div class="relative w-full max-w-xl bg-white dark:bg-gray-900 shadow-[0.125rem_0.375rem_0.75rem_#00000059] rounded-none dark:rounded-lg px-14 pt-14 pb-14 max-h-[calc(100vh-4rem)] overflow-y-auto">
     <ng-content></ng-content>
   </div>
 </div>

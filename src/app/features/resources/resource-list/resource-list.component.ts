@@ -23,6 +23,7 @@ type ListViewModel = AnyListItem & {
 /**
  * Generic list page for SWAPI resources (e.g. people, films, planets).
  *
+ * @description
  * The concrete resource type is selected via `route.data.resourceKey` and resolved through
  * {@link ResourceRegistryService}. The registry definition controls the list title, fields,
  * image strategy and data loading function.
@@ -31,6 +32,8 @@ type ListViewModel = AnyListItem & {
  * - Client-side pagination (page size defined per resource in the registry)
  * - Loading and error states with retry
  * - Deterministic placeholder images via {@link PicsumImageService}
+ *
+ * @component
  */
 @Component({
   selector: 'app-resource-list',
@@ -50,51 +53,24 @@ export class ResourceListComponent implements OnInit, OnDestroy {
 
   items: ListViewModel[] = [];
   private allItems: AnyListItem[] = [];
+  private destroy$ = new Subject<void>();
 
   isLoading = true;
   errorMessage = '';
-
   currentPage = 1;
   totalCount = 0;
   hasNextPage = false;
   hasPreviousPage = false;
+  isAddModalOpen = false;
 
+  /**
+   * Returns the total number of pages based on the total item count and the configured page size.
+   *
+   * @returns Total pages (minimum 1)
+   */
   get totalPages(): number {
     const pageSize = this.definition?.list.pageSize ?? 1;
     return Math.max(1, Math.ceil(this.totalCount / pageSize));
-  }
-
-  isAddModalOpen = false;
-
-  private destroy$ = new Subject<void>();
-
-  /**
-   * Initializes the page based on `route.data.resourceKey` and triggers the initial list load.
-   *
-   * @returns void
-   */
-  ngOnInit(): void {
-    const dataKey = this.route.snapshot.data['resourceKey'] as unknown;
-    if (!isResourceKey(dataKey)) {
-      this.isLoading = false;
-      this.errorMessage = 'Invalid resource.';
-      return;
-    }
-
-    this.resourceKey = dataKey;
-    this.definition = this.registry.getDefinition(this.resourceKey) as unknown as ResourceDefinition<unknown, unknown>;
-
-    this.loadList();
-  }
-
-  /**
-   * Cleans up subscriptions.
-   *
-   * @returns void
-   */
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 
   /**
@@ -133,6 +109,35 @@ export class ResourceListComponent implements OnInit, OnDestroy {
   get cardTitle(): (item: AnyListItem) => string {
     const fn = this.definition?.list.cardTitle;
     return (fn as unknown as (item: AnyListItem) => string) ?? ((item) => item['name']?.toString() ?? item['title']?.toString() ?? '');
+  }
+
+  /**
+   * Initializes the page based on `route.data.resourceKey` and triggers the initial list load.
+   *
+   * @returns void
+   */
+  ngOnInit(): void {
+    const dataKey = this.route.snapshot.data['resourceKey'] as unknown;
+    if (!isResourceKey(dataKey)) {
+      this.isLoading = false;
+      this.errorMessage = 'Invalid resource.';
+      return;
+    }
+
+    this.resourceKey = dataKey;
+    this.definition = this.registry.getDefinition(this.resourceKey) as unknown as ResourceDefinition<unknown, unknown>;
+
+    this.loadList();
+  }
+
+  /**
+   * Cleans up subscriptions.
+   *
+   * @returns void
+   */
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   /**

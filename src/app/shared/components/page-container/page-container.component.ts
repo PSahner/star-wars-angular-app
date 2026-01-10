@@ -5,9 +5,11 @@ import { Input } from '@angular/core';
 /**
  * Shared page layout container.
  *
- * Features:
- * - Consistent horizontal container width
- * - Optional outer wrapper classes via `classNames`
+ * @description
+ * Provides a consistent centered container with max-width and padding
+ * for page content. Supports additional custom classes.
+ *
+ * @component
  */
 @Component({
   selector: 'app-page-container',

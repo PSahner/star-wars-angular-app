@@ -6,9 +6,12 @@ import { StarWarsLogoComponent } from '@shared/components/star-wars-logo/star-wa
 /**
  * Landing page component displaying the Star Wars logo.
  *
- * Features:
- * - Full-height hero area
- * - Centered logo layout
+ * @description
+ * This component serves as the main entry point for the application.
+ * It displays a full-height hero area with the centered Star Wars logo.
+ * Uses PageContainerComponent for layout structure.
+ *
+ * @component
  */
 @Component({
   selector: 'app-frontpage',

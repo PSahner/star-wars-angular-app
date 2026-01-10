@@ -4,8 +4,11 @@ import { NgClass } from '@angular/common';
 /**
  * Star Wars logo SVG component.
  *
- * Features:
- * - Accepts Tailwind class string via `classNames`
+ * @description
+ * Renders the Star Wars logo as an inline SVG.
+ * Supports sizing and coloring via Tailwind classes.
+ *
+ * @component
  */
 @Component({
   selector: 'app-star-wars-logo',

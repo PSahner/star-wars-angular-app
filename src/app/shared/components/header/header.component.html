@@ -1,6 +1,6 @@
 <!-- Header Navigation -->
 <header
-  class="bg-sw-white dark:bg-sw-dark-blue text-sw-dark-blue dark:text-gray-100 fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out border-b border-[#10172C26] dark:border-gray-800 h-[var(--app-header-height)]"
+  class="bg-white dark:bg-sw-dark-blue text-sw-dark-blue dark:text-gray-100 fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out border-b border-sw-dark-platinum dark:border-gray-800 h-[var(--app-header-height)]"
 >
   <div class="container mx-auto px-4 h-full">
     <div class="flex items-center justify-between h-full">
@@ -15,10 +15,10 @@
           <a
             routerLink="/"
             class="flex items-center transition-all duration-300 ease-in-out mr-0 text-sw-dark-blue dark:text-gray-100"
-            [ngClass]="isCompact ? 'md:mr-[56px]' : 'md:mr-[76px]'"
+            [ngClass]="isCompact ? 'md:mr-14' : 'md:mr-20'"
           >
             <app-star-wars-logo
-              [classNames]="isCompact ? 'h-[19px] md:h-[37px] w-auto transition-all duration-300' : 'h-[19px] md:h-[46px] w-auto transition-all duration-300'"
+              [classNames]="isCompact ? 'h-6 md:h-9 w-auto transition-all duration-300' : 'h-6 md:h-12 w-auto transition-all duration-300'"
             ></app-star-wars-logo>
           </a>
         </div>
@@ -29,28 +29,13 @@
           [ngClass]="isCompact ? 'space-x-4' : 'space-x-8'"
         >
           <a
-            routerLink="/films"
+            *ngFor="let item of navItems"
+            [routerLink]="item.route"
             routerLinkActive="text-sw-dark-blue dark:text-sw-yellow font-bold"
-            #rlaFilme="routerLinkActive"
-            class="text-sw-dark-blue dark:text-gray-100 hover:text-gray-600 dark:hover:text-sw-yellow transition-colors duration-200 py-2 text-[14px] leading-[17px] font-normal"
+            #rla="routerLinkActive"
+            class="text-sw-dark-blue dark:text-gray-100 hover:text-gray-600 dark:hover:text-sw-yellow transition-colors duration-200 py-2 text-sm leading-tight font-normal"
           >
-            <span [ngClass]="rlaFilme.isActive ? 'border-b border-sw-dark-blue dark:border-sw-yellow' : ''">Filme</span>
-          </a>
-          <a
-            routerLink="/people"
-            routerLinkActive="text-sw-dark-blue dark:text-sw-yellow font-bold"
-            #rlaCharaktere="routerLinkActive"
-            class="text-sw-dark-blue dark:text-gray-100 hover:text-gray-600 dark:hover:text-sw-yellow transition-colors duration-200 py-2 text-[14px] leading-[17px] font-normal"
-          >
-            <span [ngClass]="rlaCharaktere.isActive ? 'border-b border-sw-dark-blue dark:border-sw-yellow' : ''">Charaktere</span>
-          </a>
-          <a
-            routerLink="/planets"
-            routerLinkActive="text-sw-dark-blue dark:text-sw-yellow font-bold"
-            #rlaPlaneten="routerLinkActive"
-            class="text-sw-dark-blue dark:text-gray-100 hover:text-gray-600 dark:hover:text-sw-yellow transition-colors duration-200 py-2 text-[14px] leading-[17px] font-normal"
-          >
-            <span [ngClass]="rlaPlaneten.isActive ? 'border-b border-sw-dark-blue dark:border-sw-yellow' : ''">Planeten</span>
+            <span [ngClass]="rla.isActive ? 'border-b border-sw-dark-blue dark:border-sw-yellow' : ''">{{ item.label }}</span>
           </a>
         </nav>
       </div>
@@ -63,7 +48,7 @@
             [(ngModel)]="searchQuery"
             name="search"
             placeholder="Suche"
-            class="bg-sw-white dark:bg-gray-800 text-sw-dark-blue dark:text-gray-100 rounded-[2px] dark:rounded-full px-4 py-2 pr-10 border border-sw-silver dark:border-none focus:outline-none focus:ring-1 focus:ring-sw-dark-blue focus:border-sw-dark-blue dark:focus:ring-2 dark:focus:ring-sw-yellow min-w-[220px] dark:w-64 min-h-[50px] placeholder:text-sw-silver dark:placeholder:text-gray-400 placeholder:text-[16px] placeholder:leading-[22px] placeholder:font-normal placeholder:font-roboto transition-all duration-300 hover:border-sw-dark-blue dark:hover:border-none"
+            class="bg-gray-100 dark:bg-gray-800 text-sw-dark-blue dark:text-gray-100 rounded-sm dark:rounded-full px-4 py-2 pr-10 border border-sw-silver dark:border-none focus:outline-none focus:ring-1 focus:ring-sw-dark-blue focus:border-sw-dark-blue dark:focus:ring-2 dark:focus:ring-sw-yellow min-w-56 dark:w-64 min-h-12 placeholder:text-sw-silver dark:placeholder:text-gray-400 placeholder:text-base placeholder:leading-5 placeholder:font-normal placeholder:font-roboto transition-all duration-300 hover:border-sw-dark-blue dark:hover:border-none"
           />
           <button
             type="submit"
@@ -139,36 +124,19 @@
     <!-- Mobile Menu -->
     <div
       *ngIf="isMobileMenuOpen"
-      class="md:hidden pb-4 animate-slide-down bg-sw-white dark:bg-sw-dark-blue shadow-lg absolute top-[var(--app-header-height)] left-0 w-full px-4 border-t border-gray-100 dark:border-gray-800"
+      class="md:hidden pb-4 animate-slide-down bg-gray-100 dark:bg-sw-dark-blue shadow-lg absolute top-[var(--app-header-height)] left-0 w-full px-4 border-t border-gray-100 dark:border-gray-800"
     >
       <!-- Mobile Navigation -->
       <nav class="flex flex-col space-y-4 mb-4 pt-4">
         <a
-          routerLink="/films"
+          *ngFor="let item of navItems"
+          [routerLink]="item.route"
           routerLinkActive="text-sw-dark-blue dark:text-sw-yellow font-bold"
-          #rlaMobileFilme="routerLinkActive"
+          #rla="routerLinkActive"
           (click)="closeMobileMenu()"
-          class="text-sw-dark-blue dark:text-gray-100 hover:text-gray-600 dark:hover:text-sw-yellow transition-colors duration-200 text-[14px] leading-[17px] font-normal border-b border-sw-silver/20 dark:border-gray-700 pb-2"
+          class="text-gray-600 dark:text-gray-100 hover:text-gray-800 dark:hover:text-sw-yellow transition-colors duration-200 text-md leading-tight border-b border-sw-dark-platinum dark:border-gray-700 pb-2"
         >
-          <span>Filme</span>
-        </a>
-        <a
-          routerLink="/people"
-          routerLinkActive="text-sw-dark-blue dark:text-sw-yellow font-bold"
-          #rlaMobileCharaktere="routerLinkActive"
-          (click)="closeMobileMenu()"
-          class="text-sw-dark-blue dark:text-gray-100 hover:text-gray-600 dark:hover:text-sw-yellow transition-colors duration-200 text-[14px] leading-[17px] font-normal border-b border-sw-silver/20 dark:border-gray-700 pb-2"
-        >
-          <span>Charaktere</span>
-        </a>
-        <a
-          routerLink="/planets"
-          routerLinkActive="text-sw-dark-blue dark:text-sw-yellow font-bold"
-          #rlaMobilePlaneten="routerLinkActive"
-          (click)="closeMobileMenu()"
-          class="text-sw-dark-blue dark:text-gray-100 hover:text-gray-600 dark:hover:text-sw-yellow transition-colors duration-200 text-[14px] leading-[17px] font-normal border-b border-sw-silver/20 dark:border-gray-700 pb-2"
-        >
-          <span>Planeten</span>
+          <span>{{ item.label }}</span>
         </a>
       </nav>
 
@@ -179,7 +147,7 @@
           [(ngModel)]="searchQuery"
           name="search"
           placeholder="Suche"
-          class="bg-sw-white dark:bg-gray-800 text-sw-dark-blue dark:text-gray-100 rounded-[2px] dark:rounded-full px-4 py-2 pr-10 border border-sw-silver dark:border-none focus:outline-none focus:ring-1 focus:ring-sw-dark-blue focus:border-sw-dark-blue dark:focus:ring-2 dark:focus:ring-sw-yellow w-full min-h-[50px] placeholder:text-sw-silver dark:placeholder:text-gray-400 placeholder:text-[16px] placeholder:leading-[22px] placeholder:font-normal placeholder:font-roboto transition-all duration-300 hover:border-sw-dark-blue dark:hover:border-none"
+          class="bg-gray-100 dark:bg-gray-800 text-sw-dark-blue dark:text-gray-100 rounded-sm dark:rounded-full px-4 py-2 pr-10 border border-sw-silver dark:border-none focus:outline-none focus:ring-1 focus:ring-sw-dark-blue focus:border-sw-dark-blue dark:focus:ring-2 dark:focus:ring-sw-yellow w-full min-h-12 placeholder:text-sw-silver dark:placeholder:text-gray-400 placeholder:text-base placeholder:leading-5 placeholder:font-normal placeholder:font-roboto transition-all duration-300 hover:border-sw-dark-blue dark:hover:border-none"
         />
         <button
           type="submit"
@@ -193,4 +161,3 @@
     </div>
   </div>
 </header>
-

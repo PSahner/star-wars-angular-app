@@ -33,6 +33,7 @@ type RelatedResolved = {
 /**
  * Generic detail page for a single SWAPI resource (e.g. person, film, planet).
  *
+ * @description
  * The resource type is selected via `route.data.resourceKey` and resolved through
  * {@link ResourceRegistryService}. The page subscribes to `route.params` to react to ID
  * changes, loads the main item via `definition.detail.getById`, and then optionally loads
@@ -43,6 +44,8 @@ type RelatedResolved = {
  * - Retry reloads the current ID without re-subscribing to route params
  * - Partial related-data failures do not break the page (handled per-block)
  * - Separate light/dark layouts are implemented in the template via {@link ThemeService}
+ *
+ * @component
  */
 @Component({
   selector: 'app-resource-detail',
@@ -131,6 +134,15 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * Returns the kicker (subtitle text above the main heading) configured for the current resource.
+   *
+   * @returns Kicker string
+   */
+  kicker(): string {
+    return this.definition?.titles.detailKicker ?? '';
+  }
+
+  /**
    * Returns the computed title for the current detail item.
    *
    * @returns Title string
@@ -140,19 +152,15 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
     return (this.definition.detail.title as unknown as (i: AnyDetailItem) => string)(this.item);
   }
 
+  /**
+   * Returns the computed subtitle for the current detail item.
+   *
+   * @returns Subtitle string
+   */
   subtitle(): string {
     if (!this.definition || !this.item) return '';
     const fn = this.definition.detail.subtitle as unknown as ((i: AnyDetailItem) => string) | undefined;
     return fn ? fn(this.item) : '';
-  }
-
-  /**
-   * Returns the kicker (subtitle text above the main heading) configured for the current resource.
-   *
-   * @returns Kicker string
-   */
-  kicker(): string {
-    return this.definition?.titles.detailKicker ?? '';
   }
 
   /**

@@ -5,20 +5,36 @@ import { FilmsService, PeopleService, PlanetsService } from '@core/services';
 import { Film, FilmWithId, Person, PersonWithId, Planet, PlanetWithId } from '@core/models';
 import { extractIdFromUrl, translateGender } from '@shared/utilities';
 
+/**
+ * Supported resource keys that are exposed in routing and UI.
+ */
 export type ResourceKey = 'people' | 'films' | 'planets';
 
+/**
+ * RouterLink commands array used by related blocks to generate navigation links.
+ */
 export type RouterLinkCommands = Array<string | number>;
 
+/**
+ * Field definition for rendering labeled values in the UI.
+ */
 export interface UiField<T> {
   label: string;
   value: (item: T) => string;
 }
 
+/**
+ * Image definition used by cards and detail views.
+ * A stable `seed` allows deterministic placeholder image generation.
+ */
 export interface ImageDefinition<T> {
   seed: (item: T) => string;
   size: { width: number; height: number };
 }
 
+/**
+ * Definition for a related content block that loads a single related resource.
+ */
 export interface RelatedSingleBlock<TMain> {
   kind: 'single';
   title: string;
@@ -28,6 +44,9 @@ export interface RelatedSingleBlock<TMain> {
   label: (item: unknown) => string;
 }
 
+/**
+ * Definition for a related content block that loads a list of related resources.
+ */
 export interface RelatedListBlock<TMain> {
   kind: 'list';
   title: string;
@@ -40,8 +59,17 @@ export interface RelatedListBlock<TMain> {
   limit?: number;
 }
 
+/**
+ * Union of the supported related block kinds.
+ */
 export type RelatedBlock<TMain> = RelatedSingleBlock<TMain> | RelatedListBlock<TMain>;
 
+/**
+ * Configuration contract for resources.
+ *
+ * The registry centralizes UI metadata (titles, fields, images, related blocks)
+ * and the data access functions used by list and detail views.
+ */
 export interface ResourceDefinition<TList, TDetail> {
   key: ResourceKey;
 
@@ -86,21 +114,37 @@ export type AnyResourceDefinition =
   | ResourceDefinition<Film, FilmWithId>
   | ResourceDefinition<Planet, PlanetWithId>;
 
+/**
+ * Type guard for validating a route/param value as a supported resource key.
+ */
 export function isResourceKey(value: unknown): value is ResourceKey {
   return value === 'people' || value === 'films' || value === 'planets';
 }
 
+/**
+ * Formats an ISO date string using German locale.
+ * Falls back to the input if parsing fails.
+ */
 function formatGermanDate(iso: string): string {
   const ms = Date.parse(iso);
   if (Number.isNaN(ms)) return iso;
   return new Date(ms).toLocaleDateString('de-DE');
 }
 
+/**
+ * Derives a stable image seed based on a SWAPI URL id or a string fallback.
+ */
 function seedFromUrl(prefix: string, url: string, fallback: string): string {
   const id = extractIdFromUrl(url);
   return id !== null ? `${prefix}-${id}` : `${prefix}-${fallback}`;
 }
 
+/**
+ * Service that provides a single source of truth for resource metadata.
+ *
+ * The registry maps each `ResourceKey` to a `ResourceDefinition` that contains
+ * list/detail titles, UI fields, image settings and related resource resolvers.
+ */
 @Injectable({
   providedIn: 'root'
 })
@@ -109,6 +153,11 @@ export class ResourceRegistryService {
   private filmsService = inject(FilmsService);
   private planetsService = inject(PlanetsService);
 
+  /**
+   * Returns the resource definition used to render list and detail pages.
+   *
+   * @param key Resource key
+   */
   getDefinition(key: ResourceKey): AnyResourceDefinition {
     switch (key) {
       case 'people':
@@ -120,6 +169,7 @@ export class ResourceRegistryService {
     }
   }
 
+  // Builds the definition for the People resource.
   private getPeopleDefinition(): ResourceDefinition<Person, PersonWithId> {
     return {
       key: 'people',
@@ -204,6 +254,7 @@ export class ResourceRegistryService {
     };
   }
 
+  // Builds the definition for the Films resource.
   private getFilmsDefinition(): ResourceDefinition<Film, FilmWithId> {
     return {
       key: 'films',
@@ -285,6 +336,7 @@ export class ResourceRegistryService {
     };
   }
 
+  // Builds the definition for the Planets resource.
   private getPlanetsDefinition(): ResourceDefinition<Planet, PlanetWithId> {
     return {
       key: 'planets',

@@ -13,6 +13,8 @@ A modern, production-ready Angular 18 application for exploring the Star Wars un
 - [Features](#features)
 - [Tech Stack](#tech-stack)
 - [Project Structure](#project-structure)
+- [Architecture (High-Level)](#architecture-high-level)
+- [Routes](#routes)
 - [Getting Started](#getting-started)
 - [Development](#development)
 - [Testing](#testing)
@@ -33,7 +35,7 @@ A modern, production-ready Angular 18 application for exploring the Star Wars un
   - Loading states and error handling (reusable shared components)
 - **Services Layer:** Full service architecture
   - Base `SwapiService` with HTTP client, caching, retry logic
-  - Feature services for People, Films, Starships, Planets
+  - Feature services for People, Films, Planets (and Starships)
   - Comprehensive error handling
 - **Reusable UI building blocks**
   - `LoadingStateComponent` + `ErrorStateComponent` for consistent async UI
@@ -47,10 +49,14 @@ A modern, production-ready Angular 18 application for exploring the Star Wars un
 - **Code Quality:** ESLint + Prettier (CI enforces lint + tests)
 - **CI/CD:** GitHub Actions (reusable workflow for lint/test/build, optional Codecov upload)
 
-### To Be Implemented 🚧
-- **Starships (Optional UI):** List and detail views (services exist; UI is not wired yet)
-- **Search Functionality:** Global search across resources
-- **Modal Forms:** UI-only "Add" forms (as per requirements)
+### UI-only / Optional Enhancements ✅
+- **Frontpage (Startseite):** Landing page (`/`) with centered logo
+- **"Add" Modals:** UI-only modal overlays on list pages (no persistence, API is read-only)
+
+### Out of Scope / Future Work 🧩
+- **Starships UI:** Services exist (`StarshipsService`), but list/detail pages are not wired
+- **Search:** Search bar is UI-only (currently logs to console)
+- **Advanced filtering**
 
 ---
 
@@ -72,7 +78,7 @@ A modern, production-ready Angular 18 application for exploring the Star Wars un
 
 ### CI/CD & Deployment
 - **CI/CD:** GitHub Actions
-- **Security:** Aikido Safe Chain
+- **Security:** Aikido Safe Chain (no tokens required) is installed in CI/CD to protect `npm ci` from malicious packages
 - **Hosting:** GitHub Pages
 
 ---
@@ -128,10 +134,37 @@ star-wars-angular-app/
 
 ---
 
+## 🧠 Architecture (High-Level)
+
+This project is built around a **registry-driven UI**:
+
+- **`ResourceRegistryService`** (`src/app/features/resources/resource-registry.ts`) is the single source of truth for:
+  - list/detail titles
+  - card + detail field renderers
+  - image generation configuration (seed + size)
+  - related blocks (single + list)
+  - data loaders (`getAll`, `getById`, related `load(...)`)
+- **Generic pages** render all supported resources:
+  - `ResourceListComponent` (list + client-side pagination)
+  - `ResourceDetailComponent` (detail + related sections)
+
+Because SWAPI Reborn list endpoints return **plain arrays** and the API is **read-only**, pagination is implemented **client-side** and "Add" actions are **UI-only**.
+
+---
+
+## 🧭 Routes
+
+- `/` (frontpage)
+- `/people` and `/people/:id`
+- `/films` and `/films/:id`
+- `/planets` and `/planets/:id`
+
+---
+
 ## 🚀 Getting Started
 
 ### Prerequisites
-- **Node.js:** (18.x or) 20.x
+- **Node.js:** 20.x (CI uses Node 20)
 - **npm:** 9.x or higher
 - **Git:** Latest version
 
@@ -165,8 +198,9 @@ star-wars-angular-app/
 | Command | Description |
 |---------|-------------|
 | `npm start` | Start dev server on http://localhost:4200 |
-| `npm run build` | Build for development |
+| `npm run build` | Build (Angular CLI default config is production in this repo) |
 | `npm run build:prod` | Build for production with GitHub Pages base-href |
+| `npm run watch` | Continuous build in development mode |
 | `npm test` | Run unit tests in watch mode |
 | `npm run test:ci` | Run tests once in headless mode |
 | `npm run lint` | Lint code |
@@ -209,6 +243,11 @@ star-wars-angular-app/
 - **Documentation:** JSDoc comments for public methods
 - **Testing:** Coverage thresholds are enforced in Karma (see `karma.conf.js`)
 
+### Documentation
+
+- **Quick start:** [docs/QUICKSTART.md](./docs/QUICKSTART.md)
+- **Architecture & extension guide:** [docs/IMPLEMENTATION_GUIDE.md](./docs/IMPLEMENTATION_GUIDE.md)
+
 ---
 
 ## 🧪 Testing
@@ -236,6 +275,10 @@ The red/yellow/green colors indicate whether the numbers meet the configured thr
 
 View coverage report:
 ```bash
+# Linux
+xdg-open coverage/star-wars-angular-app/index.html
+
+# macOS
 open coverage/star-wars-angular-app/index.html
 ```
 
@@ -250,18 +293,17 @@ Each component/service should test:
 
 Example:
 ```typescript
-describe('PeopleListComponent', () => {
-  it('should load people on initialization', () => {
+describe('ResourceListComponent', () => {
+  it('should show an error if the resourceKey route data is invalid', () => {
     // Arrange
-    const mockData = [ /* ... */ ];
-    service.getPeople.and.returnValue(of(mockData));
-    
+    // Provide ActivatedRoute with invalid route.data.resourceKey
+
     // Act
     component.ngOnInit();
-    
+
     // Assert
-    expect(component.people.length).toBe(1);
     expect(component.isLoading).toBeFalse();
+    expect(component.errorMessage).toContain('Invalid resource');
   });
 });
 ```
@@ -284,7 +326,7 @@ describe('PeopleListComponent', () => {
 
 3. **Automatic deployment:**
    - Pushes to `main` trigger automatic deployment
-   - Workflow runs security scan, tests, build, and deploy
+   - Workflow runs a dependency security check (`npm audit`), lint, tests, build, and deploy
 
 4. **Access your app:**
    ```
@@ -298,7 +340,8 @@ describe('PeopleListComponent', () => {
 npm run build:prod
 
 # Deploy to hosting service
-# Upload contents of dist/star-wars-angular-app/browser/
+# Upload the build output from:
+# dist/star-wars-angular-app/browser/
 ```
 
 ### Environment Configuration
@@ -313,7 +356,7 @@ Update `base-href` in `package.json` for different hosting:
 ## 📚 API Documentation
 
 ### SWAPI Reborn
-Base URL: `https://swapi.info/api/`
+Base URL: `https://swapi.info/api`
 
 The SWAPI Reborn API is **read-only** (GET requests). List endpoints return **plain arrays** (not paginated objects).
 
@@ -375,30 +418,6 @@ See [docs/IMPLEMENTATION_GUIDE.md](./docs/IMPLEMENTATION_GUIDE.md) for detailed 
 - [ ] No console errors
 - [ ] Responsive design verified
 - [ ] Accessibility checked
-
----
-
-## 📝 Acceptance Criteria
-
-### Completed ✅
-- [x] **AC-1:** Web application retrieves and displays data from API
-- [x] **AC-2:** Uses SWAPI Reborn (https://swapi.info/)
-- [x] **AC-3:** Master-detail relationship implemented (Characters)
-- [x] **AC-4:** Following mockup designs
-- [x] **AC-7:** Angular 18 framework
-- [x] **AC-8:** Responsive design
-- [x] **AC-9:** Git version control
-
-### In Progress 🚧
-- [x] **AC-3:** Master-detail for Films and Planets
-- [ ] **AC-5:** UI-only input forms
-- [x] **AC-6:** Three root resources (People + Films + Planets)
-
-### Technical Requirements ✅
-- [x] **TA-1:** Angular 18 (latest stable)
-- [x] **TA-2:** Tailwind CSS
-- [x] **TA-3:** GitHub Pages deployment with CI/CD
-- [x] **TA-4:** Core functionality unit tested
 
 ---
 

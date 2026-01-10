@@ -2,11 +2,13 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { NgIf } from '@angular/common';
 
 /**
- * Error state component.
+ * Error state component for displaying error messages and actions.
  *
- * Features:
- * - Displays an error title/message
- * - Optional retry action
+ * @description
+ * This component presents a user-friendly error interface with a title, description,
+ * and an optional retry button. Useful for handling API errors or empty states.
+ *
+ * @component
  */
 @Component({
   selector: 'app-error-state',
@@ -20,5 +22,6 @@ export class ErrorStateComponent {
   @Input() retryLabel = 'Erneut versuchen';
   @Input() showRetry = true;
 
+  /** Emitted when the user clicks the retry button */
   @Output() retry = new EventEmitter<void>();
 }

@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages with Aikido Security Scan
+name: Deploy to GitHub Pages with Aikido Safe Chain
 
 # Trigger on push to main branch
 on:
@@ -36,25 +36,17 @@ jobs:
         with:
           node-version: '20'
 
-
       - name: Print Node and npm versions
         run: |
           node -v
           npm -v
 
+      - name: Install Aikido Safe Chain
+        run: |
+          curl -fsSL https://github.com/AikidoSec/safe-chain/releases/latest/download/install-safe-chain.sh | sh -s -- --ci
+
       - name: Install dependencies
         run: npm ci
-
-      - name: Run Aikido Safe Chain
-        # Aikido Safe Chain security scanning
-        # This scans for vulnerabilities in dependencies
-        run: |
-          echo "Running Aikido Safe Chain security scan..."
-          # Install Aikido CLI if needed
-          # npx @aikidosec/cli scan
-          # For now, we'll use npm audit as a substitute
-          npm audit --audit-level=moderate || true
-        continue-on-error: true
 
   # Build and test job
   build-and-test:

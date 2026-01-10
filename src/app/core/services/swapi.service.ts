@@ -34,21 +34,18 @@ export class SwapiService {
   protected get<T>(endpoint: string, useCache: boolean = this.enableCache): Observable<T> {
     const url = `${this.baseUrl}/${endpoint}`;
 
-    // Check cache if enabled
     if (useCache && this.cache.has(url)) {
       console.log(`[SwapiService] Returning cached response for: ${url}`);
       return this.cache.get(url) as Observable<T>;
     }
 
-    // Make HTTP request
     const request$ = this.http.get<T>(url).pipe(
-      retry(this.retryAttempts), // Retry failed requests
+      retry(this.retryAttempts),
       tap(() => console.log(`[SwapiService] Successfully fetched: ${url}`)),
       catchError((error: HttpErrorResponse) => this.handleError(error)),
       shareReplay(1) // Share result among multiple subscribers
     );
 
-    // Cache the request if enabled
     if (useCache) {
       this.cache.set(url, request$ as Observable<unknown>);
     }

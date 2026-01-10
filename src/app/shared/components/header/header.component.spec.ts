@@ -58,12 +58,12 @@ describe('HeaderComponent', () => {
     const localComponent = localFixture.componentInstance;
 
     expect(localComponent.isCompact).toBeFalse();
-    expect(document.documentElement.style.setProperty).toHaveBeenCalledWith('--app-header-height', '80px');
+    expect(document.documentElement.style.setProperty).toHaveBeenCalledWith('--app-header-height', '5rem');
   });
 
   it('should set expanded desktop header height when scrollY is 0', () => {
     expect(component.isCompact).toBeFalse();
-    expect(document.documentElement.style.setProperty).toHaveBeenCalledWith('--app-header-height', '134px');
+    expect(document.documentElement.style.setProperty).toHaveBeenCalledWith('--app-header-height', '8.375rem');
   });
 
   it('should switch to compact mode on desktop when scrolled', () => {
@@ -85,7 +85,7 @@ describe('HeaderComponent', () => {
     component.onWindowScroll();
 
     expect(component.isCompact).toBeTrue();
-    expect(document.documentElement.style.setProperty).toHaveBeenCalledWith('--app-header-height', '98px');
+    expect(document.documentElement.style.setProperty).toHaveBeenCalledWith('--app-header-height', '6.125rem');
   });
 
   it('should toggle the theme', () => {

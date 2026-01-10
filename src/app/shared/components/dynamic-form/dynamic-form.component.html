@@ -1,22 +1,22 @@
 <form [formGroup]="form" class="w-full" (ngSubmit)="$event.preventDefault()">
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-x-[20px] gap-y-[15px]">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-x-5 gap-y-4">
     <ng-container *ngFor="let field of fields">
       <div [ngClass]="isFullWidth(field) ? 'md:col-span-2' : ''">
         <div class="flex items-center gap-2">
           <label
-            class="flex-1 min-w-0 font-roboto font-medium text-[14px] leading-[17px] tracking-normal text-sw-navy-blue dark:text-gray-200"
+            class="flex-1 min-w-0 font-roboto font-medium text-sm leading-tight tracking-normal text-sw-navy-blue dark:text-gray-200"
             [attr.for]="field.key"
           >
             <span>{{ field.label }}</span>
           </label>
         </div>
 
-        <div class="mt-[9px]">
+        <div class="mt-2">
           <input
             *ngIf="field.type === 'text' || field.type === 'number'"
             [type]="field.type === 'number' ? 'number' : 'text'"
             [id]="field.key"
-            class="w-full bg-sw-white dark:bg-gray-800 text-sw-dark-blue dark:text-gray-100 rounded-[2px] dark:rounded-full px-4 py-2 border border-sw-silver dark:border-none focus:outline-none focus:ring-1 focus:ring-sw-dark-blue focus:border-sw-dark-blue dark:focus:ring-2 dark:focus:ring-sw-yellow min-h-[50px] placeholder:text-sw-silver dark:placeholder:text-gray-400 transition-all duration-300 hover:border-sw-dark-blue"
+            class="w-full bg-gray-100 dark:bg-gray-800 text-sw-dark-blue dark:text-gray-100 rounded-sm dark:rounded-full px-4 py-2 border border-sw-silver dark:border-none focus:outline-none focus:ring-1 focus:ring-sw-dark-blue focus:border-sw-dark-blue dark:focus:ring-2 dark:focus:ring-sw-yellow min-h-12 placeholder:text-sw-silver dark:placeholder:text-gray-400 transition-all duration-300 hover:border-sw-dark-blue"
             [placeholder]="field.placeholder ?? ''"
             [formControlName]="field.key"
             (input)="onValueChanged()"
@@ -26,7 +26,7 @@
             *ngIf="field.type === 'textarea'"
             [id]="field.key"
             rows="5"
-            class="w-full bg-sw-white dark:bg-gray-800 text-sw-dark-blue dark:text-gray-100 rounded-[2px] dark:rounded-lg px-4 py-3 border border-sw-silver dark:border-none focus:outline-none focus:ring-1 focus:ring-sw-dark-blue focus:border-sw-dark-blue dark:focus:ring-2 dark:focus:ring-sw-yellow placeholder:text-sw-silver dark:placeholder:text-gray-400 transition-all duration-300 hover:border-sw-dark-blue"
+            class="w-full bg-gray-100 dark:bg-gray-800 text-sw-dark-blue dark:text-gray-100 rounded-sm dark:rounded-lg px-4 py-3 border border-sw-silver dark:border-none focus:outline-none focus:ring-1 focus:ring-sw-dark-blue focus:border-sw-dark-blue dark:focus:ring-2 dark:focus:ring-sw-yellow placeholder:text-sw-silver dark:placeholder:text-gray-400 transition-all duration-300 hover:border-sw-dark-blue"
             [placeholder]="field.placeholder ?? ''"
             [formControlName]="field.key"
             (input)="onValueChanged()"
@@ -35,7 +35,7 @@
           <select
             *ngIf="field.type === 'select'"
             [id]="field.key"
-            class="w-full bg-sw-white dark:bg-gray-800 text-sw-dark-blue dark:text-gray-100 rounded-[2px] dark:rounded-full px-4 py-2 border border-sw-silver dark:border-none focus:outline-none focus:ring-1 focus:ring-sw-dark-blue focus:border-sw-dark-blue dark:focus:ring-2 dark:focus:ring-sw-yellow min-h-[50px] transition-all duration-300 hover:border-sw-dark-blue"
+            class="w-full bg-gray-100 dark:bg-gray-800 text-sw-dark-blue dark:text-gray-100 rounded-sm dark:rounded-full px-4 py-2 border border-sw-silver dark:border-none focus:outline-none focus:ring-1 focus:ring-sw-dark-blue focus:border-sw-dark-blue dark:focus:ring-2 dark:focus:ring-sw-yellow min-h-12 transition-all duration-300 hover:border-sw-dark-blue"
             [formControlName]="field.key"
             (change)="onValueChanged()"
           >
@@ -47,7 +47,7 @@
             *ngIf="field.type === 'multiselect'"
             [id]="field.key"
             multiple
-            class="w-full bg-sw-white dark:bg-gray-800 text-sw-dark-blue dark:text-gray-100 rounded-[2px] dark:rounded-lg px-4 py-2 border border-sw-silver dark:border-none focus:outline-none focus:ring-1 focus:ring-sw-dark-blue focus:border-sw-dark-blue dark:focus:ring-2 dark:focus:ring-sw-yellow min-h-[50px] transition-all duration-300 hover:border-sw-dark-blue"
+            class="w-full bg-gray-100 dark:bg-gray-800 text-sw-dark-blue dark:text-gray-100 rounded-sm dark:rounded-lg px-4 py-2 border border-sw-silver dark:border-none focus:outline-none focus:ring-1 focus:ring-sw-dark-blue focus:border-sw-dark-blue dark:focus:ring-2 dark:focus:ring-sw-yellow min-h-12 transition-all duration-300 hover:border-sw-dark-blue"
             [formControlName]="field.key"
             (change)="onValueChanged()"
           >

@@ -4,8 +4,9 @@ import { HeaderComponent } from './shared/components/header/header.component';
 import { FooterComponent } from './shared/components/footer/footer.component';
 
 /**
- * Root component of the Star Wars Angular application
+ * Root component of the Star Wars Angular application.
  *
+ * @description
  * This component serves as the main container for the application,
  * including the header navigation and router outlet for page content.
  *
@@ -13,6 +14,8 @@ import { FooterComponent } from './shared/components/footer/footer.component';
  * - Standalone component (no NgModules)
  * - Includes HeaderComponent for navigation
  * - RouterOutlet for dynamic page rendering
+ *
+ * @component
  */
 @Component({
   selector: 'app-root',
@@ -21,7 +24,5 @@ import { FooterComponent } from './shared/components/footer/footer.component';
   templateUrl: './app.component.html'
 })
 export class AppComponent {
-  /** Application title */
   title = 'Star Wars Angular App';
-
 }

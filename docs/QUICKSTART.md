@@ -1,96 +1,141 @@
 # Quick Start Guide
 
-## ⚡ Get Started in 3 Minutes
+This guide gets you running locally in a few minutes and gives you the core commands you’ll use day-to-day.
 
-### 1. Install Dependencies
+---
+
+## ✅ Prerequisites
+
+- **Node.js:** 20.x (CI uses Node 20)
+- **npm:** 9+
+
+---
+
+## ⚡ Run locally
+
+### 1) Install dependencies
+
 ```bash
 npm install
 ```
 
-### 2. Start Development Server
+### 2) Start the dev server
+
 ```bash
 npm start
 ```
 
-### 3. Open Browser
-Navigate to: **http://localhost:4200**
+### 3) Open the app
+
+Open: `http://localhost:4200`
 
 ---
 
-## 🛠️ What Works Now?
+## 🧭 Routes to try
 
-✅ The following features are fully implemented:
-- **Generic Resources (registry-driven)** - List and detail views
-  - People: `/people`
-  - Films: `/films`
-  - Planets: `/planets`
-- **Services** - All 4 resource services (People, Films, Starships, Planets)
-- **Models** - All TypeScript interfaces
-- **Tests** - Unit tests for services and generic resource components
-- **Header** - Navigation bar with routing
-- **Shared UI building blocks** - loading/error components + shared utilities + reusable directives
-- **Code Quality** - ESLint + Prettier
-- **CI** - GitHub Actions reusable workflow (lint/test/build)
-- **Frontpage (Startseite)** - Landing page (logo-only)
-
-Note: SWAPI Reborn is **read-only** (GET requests). List endpoints return **plain arrays**; pagination in the UI is implemented **client-side**.
+- `/` (frontpage)
+- `/people` and `/people/:id`
+- `/films` and `/films/:id`
+- `/planets` and `/planets/:id`
 
 ---
 
-## ⚙️ Common Commands
+## 🧩 What’s implemented (at a glance)
+
+- **Registry-driven resources:** One generic list + detail implementation driven by a central registry.
+- **Supported resource pages:** People, Films, Planets.
+- **Client-side pagination:** SWAPI Reborn list endpoints return arrays (not paginated responses).
+- **Related sections:** Configured per resource (single + list blocks).
+- **Images:** Deterministic placeholders via Picsum (seeded URLs).
+- **Theme:** Light/dark mode toggle.
+- **UI-only features:** Search bar and “Add” modals do not persist data (API is read-only).
+
+---
+
+## ⚙️ Common commands
 
 ```bash
-# Development
-npm start                  # Start dev server
-npm run lint               # Lint
-npm run format             # Format (Prettier)
-npm run format:check       # Check formatting (Prettier)
-npm test                   # Run tests in watch mode
-npm run test:ci            # Run tests once (CI mode)
+# Dev server
+npm start
 
-# Build
-npm run build              # Build for development
-npm run build:prod         # Build for production
+# Lint / format
+npm run lint
+npm run format
+npm run format:check
 
-# Git
-git add .
-git commit -m "feat: add films feature"
-git push origin main
+# Tests
+npm test
+npm run test:ci
+
+# Builds
+npm run build
+npm run build:prod
+npm run watch
 ```
+
+Notes:
+
+- `npm run build` uses Angular’s default configuration for this repo, which is **production**.
+- `npm run build:prod` additionally sets the GitHub Pages `base-href`.
 
 ---
 
-## 📖 Detailed Instructions
+## 🏗 Build output
 
-See **[IMPLEMENTATION_GUIDE.md](./IMPLEMENTATION_GUIDE.md)** for:
-- Step-by-step implementation
-- Code patterns
-- Testing guidelines
-- Deployment instructions
+The production build output is located at:
+
+`dist/star-wars-angular-app/browser/`
+
+---
+
+## 🚢 Deployment (GitHub Pages)
+
+- Deployment is handled by `.github/workflows/deploy.yml`.
+- The script `npm run build:prod` uses:
+
+```json
+"build:prod": "ng build --configuration production --base-href /star-wars-angular-app/"
+```
+
+If your repository name differs, update the `base-href` accordingly.
 
 ---
 
 ## 🐛 Troubleshooting
 
-### Port 4200 already in use?
+### Port 4200 already in use
+
 ```bash
-npx kill-port 4200
-npm start
+lsof -i :4200
 ```
 
-### Tests failing?
+Then stop the process that is using the port, or run Angular on a different port:
+
+```bash
+npm start -- --port 4201
+```
+
+### Tests fail in headless mode
+
 ```bash
 npm install
-npm test
+npm run test:ci
 ```
 
-### Build errors?
+### “Clean install” when things are weird
+
 ```bash
 rm -rf node_modules package-lock.json
 npm install
-npm run build:prod
 ```
 
 ---
 
-Happy Testing! 🚀
+## 📖 Next reading
+
+See **[IMPLEMENTATION_GUIDE.md](./IMPLEMENTATION_GUIDE.md)** for:
+
+- architecture and key design decisions
+- how the resource registry works
+- how to add a new resource and wire routes/tests
+

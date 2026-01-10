@@ -13,6 +13,17 @@ type ResourceFormConfig = {
   fields: FormFieldConfig[];
 };
 
+/**
+ * Modal component for adding new resources (Planets, People, Films).
+ *
+ * @description
+ * This component renders a modal containing a dynamic form based on the selected resource type.
+ * It handles form state, submission simulation, and modal visibility.
+ *
+ * #INFO: Contains still a lot hardcoded data, for testing purposes
+ *
+ * @component
+ */
 @Component({
   selector: 'app-resource-add-modal',
   standalone: true,
@@ -21,8 +32,8 @@ type ResourceFormConfig = {
 })
 export class ResourceAddModalComponent {
   @Input() open = false;
-  @Input() resourceKey: ResourceKey | null = null;
-
+  @Input() resourceKey: ResourceKey | null = null; // 'planets', 'people', 'films'
+  // Emitted when the modal is closed
   @Output() closed = new EventEmitter<void>();
 
   @ViewChild(DynamicFormComponent) private dynamicForm?: DynamicFormComponent;
@@ -30,15 +41,26 @@ export class ResourceAddModalComponent {
   isSaving = false;
   private latestValue: FormValue = {};
 
+  /**
+   * Updates the latest form value when changed
+   * @param value Current form value
+   */
   onValueChange(value: FormValue): void {
     this.latestValue = value;
   }
 
+  /**
+   * Closes the modal and resets the form
+   */
   close(): void {
     this.resetForm();
     this.closed.emit();
   }
 
+  /**
+   * Simulates form submission
+   * Logs the payload and closes the modal after a delay
+   */
   submit(): void {
     if (this.isSaving) return;
 
@@ -56,10 +78,18 @@ export class ResourceAddModalComponent {
     }, 900);
   }
 
+  /**
+   * Gets the title based on the current resource key
+   * @returns Localized title string
+   */
   title(): string {
     return this.formConfig()?.title ?? '';
   }
 
+  /**
+   * Gets the form field configuration based on the current resource key
+   * @returns Array of form field configurations
+   */
   fields(): FormFieldConfig[] {
     return this.formConfig()?.fields ?? [];
   }

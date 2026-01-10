@@ -21,12 +21,12 @@ body {
 }
 
 :root {
-  --app-header-height: 80px;
-  --app-footer-height: 79px;
+  --app-header-height: 5rem;
+  --app-footer-height: 4.9375rem;
 }
 
 body {
-  @apply bg-sw-white dark:bg-gray-800 text-sw-dark-blue dark:text-gray-100 transition-colors duration-300;
+  @apply bg-gray-100 dark:bg-gray-800 text-sw-dark-blue dark:text-gray-100 transition-colors duration-300;
 }
 
 /* Smooth scrolling */
@@ -36,8 +36,8 @@ html {
 
 /* Custom scrollbar styling */
 ::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
+  width: 0.625rem;
+  height: 0.625rem;
 }
 
 ::-webkit-scrollbar-track {

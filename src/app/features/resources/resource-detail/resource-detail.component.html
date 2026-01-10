@@ -1,5 +1,5 @@
-<app-page-container classNames="font-roboto tracking-normal bg-sw-white dark:bg-gray-800 text-sw-dark-blue dark:text-gray-100 pb-[80px]">
-  <div class="my-[63.5px]">
+<app-page-container classNames="font-roboto tracking-normal bg-white dark:bg-gray-800 text-sw-dark-blue dark:text-gray-100 pb-20">
+  <div class="my-16">
     <a
       [routerLink]="backLink()"
       class="inline-flex items-center dark:text-gray-300 hover:underline dark:hover:no-underline dark:hover:text-sw-yellow transition-colors duration-200"
@@ -17,25 +17,27 @@
   <app-error-state *ngIf="!isLoading && errorMessage" [message]="errorMessage" (retry)="retry()"></app-error-state>
 
   <div *ngIf="!isLoading && !errorMessage && item">
+
+    <!-- LIGHT THEME -->
     <ng-container *ngIf="!themeService.isDark()">
 
       <!-- Headline -->
-      <div class="text-center mb-[109px]">
-        <p class="font-light text-[25px] leading-[30px] mb-[20.5px]">{{ kicker() }}</p>
-        <div class="mx-auto border border-sw-dark-blue w-[53px] h-0"></div>
-        <h1 class="font-bold text-[75px] leading-[90px] mt-[9.5px] mb-[2px]">
+      <div class="text-center mb-28">
+        <p class="font-light text-2xl leading-8 mb-5">{{ kicker() }}</p>
+        <div class="mx-auto border border-sw-dark-blue w-14 h-0"></div>
+        <h1 class="font-bold text-7xl leading-tight mt-2.5 mb-0.5">
           {{ title() }}
         </h1>
-        <p *ngIf="subtitle()" class="font-light text-[18px] leading-[23px] mt-[12px]">{{ subtitle() }}</p>
+        <p *ngIf="subtitle()" class="font-light text-lg leading-6 mt-3">{{ subtitle() }}</p>
       </div>
 
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <div>
+      <div class="flex flex-col lg:flex-row gap-8">
 
+        <div class="flex-1 order-2 lg:order-1">
           <!-- Details Section -->
-          <h2 class="font-bold text-[25px] leading-[28px] mb-6">Details:</h2>
+          <h2 class="font-bold text-2xl leading-7 mb-6">Details:</h2>
           <div class="space-y-0">
-            <div *ngFor="let field of fields()" class="text-[18px] leading-[23px]">
+            <div *ngFor="let field of fields()" class="text-lg leading-6">
               <span class="font-bold">{{ field.label }}: </span><span>{{ field.value(item) }}</span>
             </div>
           </div>
@@ -46,10 +48,10 @@
             <!-- Single Related Item -->
             <ng-container *ngIf="rel.block.kind === 'single' && rel.single">
               <div class="mt-6 flex items-center">
-                <h3 class="font-bold text-[18px] leading-[23px] mr-[5px]">{{ rel.block.title }}:</h3>
+                <h3 class="font-bold text-lg leading-6 mr-1">{{ rel.block.title }}:</h3>
                 <a
                   [routerLink]="rel.block.link(rel.single)"
-                  class="flex-none bg-sw-platinum hover:bg-sw-platinum-hover font-bold text-[14px] leading-[17px] rounded-[1px] transition-colors duration-200 py-[19px] px-[29px]"
+                  class="flex-none bg-sw-platinum hover:bg-sw-silver font-bold text-sm leading-tight rounded-sm transition-colors duration-200 py-5 px-7"
                 >
                   {{ rel.block.label(rel.single) }}
                 </a>
@@ -59,12 +61,12 @@
             <!-- List of Related Items -->
             <ng-container *ngIf="rel.block.kind === 'list' && rel.list.length > 0">
               <div class="mt-10">
-                <h2 class="font-bold text-[25px] leading-[30px] mb-4">{{ rel.block.title }}:</h2>
+                <h2 class="font-bold text-2xl leading-8 mb-4">{{ rel.block.title }}:</h2>
                 <div class="flex flex-wrap gap-4">
                   <a
                     *ngFor="let relatedItem of rel.list"
                     [routerLink]="rel.block.link(relatedItem)"
-                    class="bg-sw-platinum hover:bg-sw-platinum-hover font-bold text-[14px] leading-[17px] rounded-[1px] transition-colors duration-200 py-[19px] px-[29px]"
+                    class="bg-sw-platinum hover:bg-sw-dark-platinum font-bold text-sm leading-tight rounded-sm transition-colors duration-200 py-5 px-7"
                   >
                     {{ rel.block.label(relatedItem) }}
                   </a>
@@ -74,26 +76,30 @@
           </div>
         </div>
 
-        <div class="flex items-start justify-center lg:justify-end">
+        <div class="flex-1 flex items-start justify-center lg:justify-end order-1 lg:order-2">
           <div class="w-full relative overflow-hidden aspect-[28/15]">
             <img [src]="item.imageUrl" [alt]="title()" (error)="onImageError($event)" class="w-full h-full object-cover" />
           </div>
         </div>
+
       </div>
+
     </ng-container>
 
+
+    <!-- DARK THEME -->
     <div *ngIf="themeService.isDark()" class="bg-sw-dark-blue dark:bg-sw-dark-blue rounded-lg shadow-xl overflow-hidden transition-colors duration-300">
 
       <!-- Headline -->
-      <div class="bg-sw-brandy dark:bg-sw-brandy text-gray-100 text-center py-6 transition-colors duration-300">
+      <div class="bg-sw-brandy dark:bg-sw-brandy text-white text-center py-6 transition-colors duration-300">
         <p class="text-sm uppercase tracking-wide text-sw-yellow mb-2">{{ kicker() }}</p>
         <h1 class="text-3xl md:text-4xl font-bold">{{ title() }}</h1>
-        <p *ngIf="subtitle()" class="mt-2 text-sm text-gray-100">{{ subtitle() }}</p>
+        <p *ngIf="subtitle()" class="mt-2 text-sm text-white">{{ subtitle() }}</p>
       </div>
 
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 p-6 md:p-10">
-        <div class="space-y-6">
+      <div class="flex flex-col lg:flex-row gap-8 p-6 md:p-10">
 
+        <div class="flex-1 space-y-6 order-2 lg:order-1">
           <!-- Details Section -->
           <h2 class="text-2xl font-bold mb-4">Details:</h2>
           <div class="space-y-3">
@@ -119,7 +125,7 @@
           </div>
         </div>
 
-        <div class="flex items-center justify-center">
+        <div class="flex-1 flex items-center justify-center order-1 lg:order-2">
           <div class="w-full max-w-md">
             <img [src]="item.imageUrl" [alt]="title()" (error)="onImageError($event)" class="w-full h-auto rounded-lg shadow-2xl" />
           </div>

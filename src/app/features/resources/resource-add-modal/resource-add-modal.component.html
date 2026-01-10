@@ -4,7 +4,7 @@
   (closed)="close()"
 >
   <div class="flex flex-col">
-    <h2 class="font-roboto font-bold text-center text-[25px] leading-[30px] text-sw-dark-blue dark:text-gray-100">
+    <h2 class="font-bold text-center text-2xl leading-8 text-sw-dark-blue dark:text-gray-100">
       {{ title() }}
     </h2>
 
@@ -12,10 +12,10 @@
       <app-dynamic-form [fields]="fields()" (valueChange)="onValueChange($event)"></app-dynamic-form>
     </div>
 
-    <div class="mt-[52px] flex justify-end gap-x-[20px]">
+    <div class="mt-12 flex justify-end gap-x-5">
       <button
         type="button"
-        class="bg-gray-100 dark:bg-gray-700 rounded-[2px] dark:rounded-lg font-roboto font-medium text-[14px] leading-[17px] tracking-normal text-sw-navy-blue dark:text-gray-100 px-[38px] py-[21px] hover:bg-gray-200 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-sw-dark-blue dark:focus:ring-sw-yellow disabled:opacity-60"
+        class="bg-sw-platinum dark:bg-gray-700 rounded-sm dark:rounded-lg font-medium text-sm leading-tight tracking-normal text-sw-navy-blue dark:text-gray-100 px-10 py-5 hover:text-sw-yellow dark:hover:text-sw-yellow focus:outline-none focus:ring-2 focus:ring-sw-dark-blue dark:focus:ring-sw-yellow disabled:opacity-60"
         (click)="close()"
         [disabled]="isSaving"
       >
@@ -24,7 +24,7 @@
 
       <button
         type="button"
-        class="bg-sw-dark-blue dark:bg-sw-dark-blue rounded-[2px] dark:rounded-lg font-roboto font-medium text-[14px] leading-[17px] tracking-normal text-gray-100 px-[38px] py-[21px] hover:bg-gray-900 dark:hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-sw-dark-blue dark:focus:ring-sw-yellow disabled:opacity-60 disabled:cursor-not-allowed"
+        class="bg-sw-dark-blue dark:bg-sw-brandy rounded-sm dark:rounded-lg font-medium text-sm leading-tight tracking-normal text-white px-10 py-5 hover:text-sw-yellow dark:hover:text-sw-yellow focus:outline-none focus:ring-2 focus:ring-sw-dark-blue dark:focus:ring-sw-yellow disabled:opacity-60 disabled:cursor-not-allowed"
         (click)="submit()"
         [disabled]="isSaving"
       >

@@ -1,5 +1,11 @@
 import { Directive, ElementRef, HostBinding, HostListener, Input, inject } from '@angular/core';
 
+/**
+ * Directive that enables click-and-drag scrolling for an overflow container.
+ *
+ * Designed for horizontal carousels by default, with optional axis and speed
+ * customization.
+ */
 @Directive({
   selector: '[appDragScroll]',
   standalone: true
@@ -9,10 +15,9 @@ export class DragScrollDirective {
 
   @Input() appDragScrollEnabled = true;
 
-  /** Drag axis (default: horizontal). */
+  // Drag axis (default: x = horizontal)
   @Input() appDragScrollAxis: 'x' | 'y' = 'x';
-
-  /** Drag sensitivity multiplier (default: 1). */
+  // Drag sensitivity multiplier
   @Input() appDragScrollSpeed = 1;
 
   private isDragging = false;
@@ -40,11 +45,13 @@ export class DragScrollDirective {
     return this.isDragging ? 'none' : '';
   }
 
+  // Prevents the native drag behavior (e.g. dragging images) inside the container.
   @HostListener('dragstart', ['$event'])
   onDragStart(event: DragEvent): void {
     event.preventDefault();
   }
 
+  // Starts a drag gesture and stores the initial pointer + scroll positions.
   @HostListener('pointerdown', ['$event'])
   onPointerDown(event: PointerEvent): void {
     if (!this.appDragScrollEnabled) return;
@@ -61,6 +68,7 @@ export class DragScrollDirective {
     el.setPointerCapture(event.pointerId);
   }
 
+  // Updates scroll position while dragging.
   @HostListener('pointermove', ['$event'])
   onPointerMove(event: PointerEvent): void {
     if (!this.isDragging) return;
@@ -79,6 +87,7 @@ export class DragScrollDirective {
     }
   }
 
+  // Ends a drag gesture and releases pointer capture.
   @HostListener('pointerup', ['$event'])
   onPointerUp(event: PointerEvent): void {
     if (!this.isDragging) return;
@@ -93,6 +102,7 @@ export class DragScrollDirective {
     }
   }
 
+  // Cancels a drag gesture (e.g. when pointer capture is lost).
   @HostListener('pointercancel', ['$event'])
   onPointerCancel(event: PointerEvent): void {
     if (!this.isDragging) return;
@@ -107,6 +117,7 @@ export class DragScrollDirective {
     }
   }
 
+  // Prevents clicks after a drag gesture to avoid accidental navigation.
   @HostListener('click', ['$event'])
   onClick(event: MouseEvent): void {
     if (this.hasDragged) {

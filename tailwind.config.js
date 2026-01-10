@@ -34,9 +34,9 @@ module.exports = {
         'sw-dark-blue': '#10172C',
         'sw-navy-blue': '#00305A',
         'sw-silver': '#BBBBBB',
-        'sw-silver-hover': '#A0A0A0',
-        'sw-platinum': '#EFEFEF',
-        'sw-platinum-hover': '#DADADA',
+        'sw-dark-silver': '#A0A0A0',
+        'sw-platinum': '#F1F1F1',
+        'sw-dark-platinum': '#DBDCE0',
         'sw-granite': '#8C8A93',
         'sw-brandy': '#822717',
         'sw-white': '#FFFFFF'

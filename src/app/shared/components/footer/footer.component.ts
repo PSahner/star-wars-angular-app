@@ -3,8 +3,11 @@ import { Component } from '@angular/core';
 /**
  * Application footer component.
  *
- * Features:
- * - Displays current year and attribution link
+ * @description
+ * Displays the application footer containing the current year and
+ * attribution links to the data source (SWAPI).
+ *
+ * @component
  */
 @Component({
   selector: 'app-footer',

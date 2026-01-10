@@ -2,6 +2,11 @@ import { Injectable, signal, computed, effect } from '@angular/core';
 
 export type Theme = 'light' | 'dark';
 
+/**
+ * Service for managing the application's theme (light/dark).
+ * Persists the user preference to localStorage and applies the `dark` class to
+ * the document root for Tailwind dark mode.
+ */
 @Injectable({
   providedIn: 'root'
 })

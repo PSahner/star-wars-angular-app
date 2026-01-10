@@ -1,28 +1,37 @@
 import { Component, HostListener, inject } from '@angular/core';
-import { NgClass, NgIf } from '@angular/common';
+import { NgClass, NgFor, NgIf } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ThemeService } from '../../../core/services/theme.service';
 import { StarWarsLogoComponent } from '../star-wars-logo/star-wars-logo.component';
 
 /**
- * Header component with navigation and search functionality
+ * Header component with navigation and search functionality.
  *
- * Features:
- * - Star Wars logo
- * - Navigation menu (Filme, Charaktere, Planeten)
- * - Search bar (UI-only for now)
- * - Theme toggle
- * - Responsive design with mobile menu
+ * @description
+ * The main application header containing:
+ * - Star Wars logo and home link
+ * - Navigation menu (Films, Characters, Planets)
+ * - Search bar (UI only)
+ * - Theme toggle (Light/Dark mode)
+ * - Mobile responsive menu
+ *
+ * @component
  */
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [NgClass, NgIf, RouterModule, FormsModule, StarWarsLogoComponent],
+  imports: [NgClass, NgFor, NgIf, RouterModule, FormsModule, StarWarsLogoComponent],
   templateUrl: './header.component.html'
 })
 export class HeaderComponent {
   private themeService = inject(ThemeService);
+
+  readonly navItems = [
+    { label: 'Filme', route: '/films' },
+    { label: 'Personen', route: '/people' },
+    { label: 'Planete', route: '/planets' }
+  ] as const;
 
   private readonly desktopExpandedHeight = 134;
   private readonly desktopCompactHeight = 98;
@@ -55,7 +64,7 @@ export class HeaderComponent {
   }
 
   private syncHeaderHeight(): void {
-    const isDesktop = window.matchMedia('(min-width: 768px)').matches;
+    const isDesktop = window.matchMedia('(min-width: 48rem)').matches;
 
     if (!isDesktop) {
       this.isCompact = false;
@@ -74,7 +83,8 @@ export class HeaderComponent {
   }
 
   private setHeaderHeightCssVar(px: number): void {
-    document.documentElement.style.setProperty('--app-header-height', `${px}px`);
+    const rem = px / 16;
+    document.documentElement.style.setProperty('--app-header-height', `${rem}rem`);
   }
 
   /**
